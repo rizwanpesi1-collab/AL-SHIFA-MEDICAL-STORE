@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ٹربو کلائم 2.5D - ریسنگ گیم</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #111;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #game-container {
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 4px solid #ffcc00;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        canvas {
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+            display: block;
+        }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+        .btn {
+            pointer-events: auto;
+            background: rgba(255, 204, 0, 0.8);
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.1s;
+            user-select: none;
+        }
+        .btn:active {
+            background: #ff9900;
+            transform: scale(0.95);
+        }
+        #brake-btn {
+            background: rgba(255, 50, 50, 0.8);
+            color: #fff;
+        }
+        #brake-btn:active {
+            background: #cc0000;
+        }
+        .info-panel {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid #ffcc00;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div class="info-panel" id="scoreBoard">اسپیڈ: 0 کلومیٹر/گھنٹہ | سکور: 0</div>
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+        
+        <div class="controls">
+            <button class="btn" id="gasBtn">اسپیڈ (Gas)</button>
+            <button class="btn" id="brakeBtn">بریک (Brake)</button>
+        </div>
+    </div>
+
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const scoreBoard = document.getElementById("scoreBoard");
+
+    // گیم ویری ایبلز
+    let car = {
+        x: 150,
+        y: 320,
+        width: 90,
+        height: 40,
+        speed: 0,
+        maxSpeed: 25,
+        acceleration: 0.3,
+        braking: 0.6,
+        friction: 0.15
+    };
+
+    let roadX = 0;
+    let score = 0;
+    let isGasPressed = false;
+    let isBrakePressed = false;
+
+    // بٹن کنٹرولز (ٹچ اور کلک دونوں کے لیے)
+    const gasBtn = document.getElementById("gasBtn");
+    const brakeBtn = document.getElementById("brakeBtn");
+
+    gasBtn.addEventListener("mousedown", () => isGasPressed = true);
+    window.addEventListener("mouseup", () => isGasPressed = false);
+    gasBtn.addEventListener("touchstart", (e) => { e.preventDefault(); isGasPressed = true; });
+    window.addEventListener("touchend", () => isGasPressed = false);
+
+    brakeBtn.addEventListener("mousedown", () => isBrakePressed = true);
+    window.addEventListener("mouseup", () => isBrakePressed = false);
+    brakeBtn.addEventListener("touchstart", (e) => { e.preventDefault(); isBrakePressed = true; });
+    window.addEventListener("touchend", () => isBrakePressed = false);
+
+    // کی بورڈ کنٹرولز (تیر والے بٹن یا اسپیس)
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "d") isGasPressed = true;
+        if (e.key === "ArrowLeft" || e.key === "a") isBrakePressed = true;
+    });
+    window.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowRight" || e.key === "d") isGasPressed = false;
+        if (e.key === "ArrowLeft" || e.key === "a") isBrakePressed = false;
+    });
+
+    function update() {
+        // اسپیڈ اور بریک کا منطقی نظام
+        if (isGasPressed) {
+            if (car.speed < car.maxSpeed) {
+                car.speed += car.acceleration;
+            }
+        } else if (isBrakePressed) {
+            if (car.speed > 0) {
+                car.speed -= car.braking;
+            } else if (car.speed > -5) {
+                car.speed -= 0.2; // ریورس
+            }
+        } else {
+            // فرکشن (قدرتی طور پر گاڑی کا سست ہونا)
+            if (car.speed > 0) {
+                car.speed -= car.friction;
+                if (car.speed < 0) car.speed = 0;
+            } else if (car.speed < 0) {
+                car.speed += car.friction;
+                if (car.speed > 0) car.speed = 0;
+            }
+        }
+
+        // روڈ کی موومنٹ
+        roadX -= car.speed;
+        score += Math.floor(car.speed);
+    }
+
+    function draw() {
+        // اسکرین صاف کریں
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // ۱. بیک گراؤنڈ مونوگرام اور لوگو (واٹر مارک)
+        ctx.save();
+        ctx.font = "bold 70px Arial";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+        ctx.textAlign = "center";
+        ctx.fillText("TURBO CLIMB 2.5D", canvas.width / 2, canvas.height / 2 - 30);
+        ctx.font = "bold 25px Arial";
+        ctx.fillText("آپ کا برانڈ مونوگرام", canvas.width / 2, canvas.height / 2 + 20);
+        ctx.restore();
+
+        // ۲. پہاڑ اور پس منظر (Parallax Background)
+        ctx.fillStyle = "#222533";
+        ctx.beginPath();
+        ctx.moveTo(0, 350);
+        for (let i = 0; i < canvas.width; i += 100) {
+            let hOffset = Math.sin((i + roadX * 0.2) * 0.01) * 40;
+            ctx.lineTo(i, 250 + hOffset);
+        }
+        ctx.lineTo(canvas.width, 350);
+        ctx.lineTo(0, 350);
+        ctx.fill();
+
+        // ۳. زمین اور روڈ (Flat & Plane Track)
+        ctx.fillStyle = "#333";
+        ctx.fillRect(0, 350, canvas.width, 100);
+
+        // روڈ کی لائنیں جو حرکت کرتی محسوس ہوں
+        ctx.strokeStyle = "#ffcc00";
+        ctx.lineWidth = 4;
+        ctx.setLineDash([30, 20]);
+        ctx.lineDashOffset = roadX;
+        ctx.beginPath();
+        ctx.moveTo(0, 400);
+        ctx.lineTo(canvas.width, 400);
+        ctx.stroke();
+        ctx.setLineDash([]); // ری سیٹ
+
+        // ۴. گاڑی (Car Drawing)
+        ctx.save();
+        ctx.translate(car.x, car.y);
+        
+        // گاڑی کی باڈی
+        ctx.fillStyle = "#ff3333";
+        ctx.fillRect(0, 0, car.width, car.height);
+        // چھت
+        ctx.fillStyle = "#ff6666";
+        ctx.fillRect(20, -15, 50, 15);
+
+        // ویلز (پہیے)
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.arc(20, car.height, 12, 0, Math.PI * 2);
+        ctx.arc(car.width - 20, car.height, 12, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+
+        // ۵. اسکور بورڈ اپڈیٹ
+        let displaySpeed = Math.floor(car.speed * 8);
+        scoreBoard.innerText = `اسپیڈ: ${displaySpeed} کلومیٹر/گھنٹہ | سکور: ${Math.floor(score / 10)}`;
+    }
+
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+</script>
+
+</body>
+</html>
