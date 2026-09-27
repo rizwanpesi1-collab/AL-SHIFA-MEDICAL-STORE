@@ -1,243 +1,1106 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ٹربو کلائم 2.5D - ریسنگ گیم</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #111;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        #game-container {
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            border: 4px solid #ffcc00;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        canvas {
-            background: linear-gradient(to bottom, #1a1a2e, #16213e);
-            display: block;
-        }
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 40px;
-            box-sizing: border-box;
-            pointer-events: none;
-        }
-        .btn {
-            pointer-events: auto;
-            background: rgba(255, 204, 0, 0.8);
-            border: none;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #000;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: 0.1s;
-            user-select: none;
-        }
-        .btn:active {
-            background: #ff9900;
-            transform: scale(0.95);
-        }
-        #brake-btn {
-            background: rgba(255, 50, 50, 0.8);
-            color: #fff;
-        }
-        #brake-btn:active {
-            background: #cc0000;
-        }
-        .info-panel {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            background: rgba(0,0,0,0.6);
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 1px solid #ffcc00;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Al-Shifa Medical Store | Faisalabad</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Vazirmatn","Noto Naskh Arabic",sans-serif;
+    background:#061315;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    background:
+    linear-gradient(
+        rgba(3,20,22,.88),
+        rgba(3,20,22,.94)
+    ),
+    url("https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=2000&q=85")
+    center/cover no-repeat;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:
+    radial-gradient(circle at 15% 20%,rgba(32,211,150,.18),transparent 30%),
+    radial-gradient(circle at 85% 70%,rgba(0,183,255,.12),transparent 32%);
+    pointer-events:none;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:16px;
+    left:4%;
+    right:4%;
+    z-index:1000;
+    padding:13px 20px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:20px;
+    background:rgba(5,28,30,.72);
+    backdrop-filter:blur(18px);
+    box-shadow:0 15px 45px rgba(0,0,0,.25);
+}
+
+.nav{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:20px;
+    font-weight:800;
+}
+
+.logo-icon{
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    background:linear-gradient(135deg,#16d9a0,#0bb5c7);
+    color:white;
+    font-size:25px;
+    box-shadow:0 8px 25px rgba(20,215,165,.25);
+}
+
+nav{
+    display:flex;
+    gap:28px;
+}
+
+nav a{
+    color:#d9eeee;
+    text-decoration:none;
+    font-size:14px;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#35e5b0;
+}
+
+.call-btn{
+    text-decoration:none;
+    color:white;
+    background:linear-gradient(135deg,#10c997,#0aa9bd);
+    padding:11px 17px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.menu{
+    display:none;
+    font-size:26px;
+    cursor:pointer;
+}
+
+/* HERO */
+.hero{
+    min-height:100vh;
+    max-width:1250px;
+    margin:auto;
+    padding:150px 25px 80px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    align-items:center;
+    gap:60px;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:30px;
+    background:rgba(22,217,160,.1);
+    border:1px solid rgba(22,217,160,.25);
+    color:#54e8ba;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.badge span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#32e3aa;
+    box-shadow:0 0 12px #32e3aa;
+}
+
+h1{
+    font-size:clamp(42px,6vw,75px);
+    line-height:1.15;
+    font-weight:800;
+    letter-spacing:-2px;
+}
+
+h1 strong{
+    color:#32e0ad;
+}
+
+.hero-text{
+    color:#c2d4d4;
+    font-size:17px;
+    line-height:2;
+    margin:25px 0;
+    max-width:650px;
+}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:13px;
+}
+
+.btn{
+    text-decoration:none;
+    padding:14px 23px;
+    border-radius:14px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+.btn-primary{
+    color:white;
+    background:linear-gradient(135deg,#11ce9a,#079db5);
+    box-shadow:0 12px 30px rgba(10,200,150,.18);
+}
+
+.btn-secondary{
+    color:#dff;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.06);
+}
+
+/* MEDICINE VISUAL */
+.visual{
+    position:relative;
+    height:520px;
+    display:grid;
+    place-items:center;
+}
+
+.medicine-card{
+    position:relative;
+    width:330px;
+    height:390px;
+    border-radius:35px;
+    background:
+    linear-gradient(
+        145deg,
+        rgba(255,255,255,.17),
+        rgba(255,255,255,.045)
+    );
+    border:1px solid rgba(255,255,255,.2);
+    backdrop-filter:blur(15px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    overflow:hidden;
+}
+
+.medicine-card::before{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    background:rgba(35,221,170,.18);
+    filter:blur(35px);
+    top:-80px;
+    right:-70px;
+}
+
+.pills{
+    position:absolute;
+    inset:0;
+}
+
+.pill{
+    position:absolute;
+    width:110px;
+    height:42px;
+    border-radius:40px;
+    background:linear-gradient(90deg,#fff 50%,#31d8ac 50%);
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+    transform:rotate(-35deg);
+}
+
+.pill.one{
+    top:85px;
+    left:55px;
+}
+
+.pill.two{
+    top:150px;
+    right:35px;
+    transform:rotate(25deg);
+}
+
+.pill.three{
+    bottom:90px;
+    left:80px;
+    transform:rotate(18deg);
+}
+
+.bottle{
+    position:absolute;
+    width:115px;
+    height:170px;
+    background:linear-gradient(135deg,#f9ffff,#b7e7df);
+    border-radius:20px 20px 25px 25px;
+    bottom:65px;
+    right:100px;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+.bottle::before{
+    content:"";
+    position:absolute;
+    width:75px;
+    height:28px;
+    top:-22px;
+    left:20px;
+    border-radius:8px 8px 3px 3px;
+    background:#1ccda2;
+}
+
+.bottle::after{
+    content:"AL-SHIFA";
+    position:absolute;
+    left:13px;
+    right:13px;
+    top:55px;
+    padding:13px 3px;
+    text-align:center;
+    border-radius:8px;
+    background:#fff;
+    color:#087c70;
+    font-size:12px;
+    font-weight:800;
+}
+
+.floating{
+    position:absolute;
+    padding:13px 17px;
+    border-radius:15px;
+    background:rgba(7,30,32,.82);
+    border:1px solid rgba(255,255,255,.13);
+    backdrop-filter:blur(12px);
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+
+.floating.one{
+    top:80px;
+    right:-20px;
+}
+
+.floating.two{
+    bottom:75px;
+    left:-25px;
+}
+
+/* STATS */
+.stats{
+    max-width:1100px;
+    margin:-20px auto 80px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.stat{
+    padding:25px;
+    text-align:center;
+    border-radius:20px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(10px);
+}
+
+.stat h3{
+    font-size:29px;
+    color:#35e1ae;
+}
+
+.stat p{
+    color:#a9bebe;
+    font-size:13px;
+    margin-top:5px;
+}
+
+/* SECTIONS */
+section{
+    max-width:1250px;
+    margin:auto;
+    padding:90px 25px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.section-title span{
+    color:#35e1ae;
+    font-size:14px;
+    font-weight:700;
+}
+
+.section-title h2{
+    font-size:38px;
+    margin:10px 0;
+}
+
+.section-title p{
+    color:#a9bebe;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.card{
+    padding:30px;
+    border-radius:25px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(12px);
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(53,225,174,.3);
+}
+
+.icon{
+    width:58px;
+    height:58px;
+    border-radius:17px;
+    display:grid;
+    place-items:center;
+    background:rgba(30,215,166,.12);
+    color:#35e1ae;
+    font-size:27px;
+    margin-bottom:20px;
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#aabebe;
+    line-height:1.9;
+    font-size:14px;
+}
+
+/* PRODUCTS */
+.products{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:17px;
+}
+
+.product{
+    padding:20px;
+    border-radius:22px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+    transition:.3s;
+}
+
+.product:hover{
+    transform:translateY(-5px);
+}
+
+.product-img{
+    height:150px;
+    border-radius:17px;
+    display:grid;
+    place-items:center;
+    font-size:65px;
+    background:linear-gradient(135deg,rgba(30,220,170,.13),rgba(0,160,190,.12));
+    margin-bottom:17px;
+}
+
+.product h3{
+    font-size:16px;
+}
+
+.product p{
+    color:#9eb2b2;
+    font-size:13px;
+    margin:6px 0 15px;
+}
+
+.product a{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    padding:10px;
+    border-radius:11px;
+    background:#0fbf96;
+    color:white;
+    font-size:13px;
+}
+
+/* ABOUT */
+.about{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:center;
+}
+
+.about-box{
+    padding:40px;
+    border-radius:30px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.about-box h2{
+    font-size:38px;
+    margin-bottom:20px;
+}
+
+.about-box p{
+    color:#afc1c1;
+    line-height:2;
+}
+
+/* CONTACT */
+.contact{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.contact-box{
+    padding:30px;
+    border-radius:25px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.contact-item{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    padding:17px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.contact-item:last-child{
+    border-bottom:0;
+}
+
+.contact-icon{
+    width:45px;
+    height:45px;
+    border-radius:13px;
+    background:rgba(30,215,166,.12);
+    display:grid;
+    place-items:center;
+    color:#35e1ae;
+}
+
+.contact-item p{
+    color:#aabebe;
+    font-size:13px;
+    margin-top:3px;
+}
+
+/* CTA */
+.cta{
+    margin:50px auto;
+    max-width:1100px;
+    padding:55px 35px;
+    border-radius:35px;
+    text-align:center;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(18,201,153,.18),
+        rgba(0,148,180,.13)
+    );
+    border:1px solid rgba(50,225,174,.2);
+}
+
+.cta h2{
+    font-size:38px;
+    margin-bottom:12px;
+}
+
+.cta p{
+    color:#aec1c1;
+    margin-bottom:25px;
+}
+
+/* FOOTER */
+footer{
+    padding:35px 20px;
+    text-align:center;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:#829999;
+    font-size:13px;
+}
+
+/* WHATSAPP */
+.whatsapp{
+    position:fixed;
+    left:20px;
+    bottom:22px;
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#20d466;
+    color:white;
+    font-size:27px;
+    text-decoration:none;
+    box-shadow:0 12px 35px rgba(32,212,102,.3);
+    z-index:999;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    nav,
+    .call-btn{
+        display:none;
+    }
+
+    .menu{
+        display:block;
+    }
+
+    .hero{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding-top:135px;
+    }
+
+    .hero-text{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .actions{
+        justify-content:center;
+    }
+
+    .visual{
+        height:430px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .about,
+    .contact{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:550px){
+
+    header{
+        left:12px;
+        right:12px;
+    }
+
+    h1{
+        font-size:43px;
+    }
+
+    .hero{
+        padding-left:18px;
+        padding-right:18px;
+    }
+
+    section{
+        padding:65px 18px;
+    }
+
+    .medicine-card{
+        width:280px;
+        height:350px;
+    }
+
+    .floating.one{
+        right:-5px;
+    }
+
+    .floating.two{
+        left:-5px;
+    }
+
+    .products{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .product{
+        padding:13px;
+    }
+
+    .product-img{
+        height:120px;
+        font-size:50px;
+    }
+
+    .section-title h2{
+        font-size:30px;
+    }
+
+    .cta h2{
+        font-size:29px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="game-container">
-        <div class="info-panel" id="scoreBoard">اسپیڈ: 0 کلومیٹر/گھنٹہ | سکور: 0</div>
-        <canvas id="gameCanvas" width="800" height="450"></canvas>
-        
-        <div class="controls">
-            <button class="btn" id="gasBtn">اسپیڈ (Gas)</button>
-            <button class="btn" id="brakeBtn">بریک (Brake)</button>
+<header>
+    <div class="nav">
+
+        <div class="logo">
+            <div class="logo-icon">✚</div>
+            <span>Al-Shifa Medical Store</span>
         </div>
+
+        <nav>
+            <a href="#home">ہوم</a>
+            <a href="#services">سروسز</a>
+            <a href="#products">پروڈکٹس</a>
+            <a href="#about">ہمارے بارے میں</a>
+            <a href="#contact">رابطہ</a>
+        </nav>
+
+        <a class="call-btn" href="tel:+92418722336">
+            📞 کال کریں
+        </a>
+
+        <div class="menu">☰</div>
+
+    </div>
+</header>
+
+
+<main id="home">
+
+<section class="hero">
+
+    <div>
+
+        <div class="badge">
+            <span></span>
+            آپ کی صحت، ہماری ترجیح
+        </div>
+
+        <h1>
+            صحت کی دیکھ بھال
+            <br>
+            اب مزید <strong>آسان</strong>
+        </h1>
+
+        <p class="hero-text">
+            Al-Shifa Medical Store پر معیاری ادویات،
+            ہیلتھ کیئر پراڈکٹس اور روزمرہ طبی ضروریات
+            ایک ہی جگہ پر حاصل کریں۔
+        </p>
+
+        <div class="actions">
+
+            <a class="btn btn-primary"
+               href="tel:+92418722336">
+                📞 ابھی کال کریں
+            </a>
+
+            <a class="btn btn-secondary"
+               href="#products">
+                💊 پروڈکٹس دیکھیں
+            </a>
+
+        </div>
+
     </div>
 
-<script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const scoreBoard = document.getElementById("scoreBoard");
 
-    // گیم ویری ایبلز
-    let car = {
-        x: 150,
-        y: 320,
-        width: 90,
-        height: 40,
-        speed: 0,
-        maxSpeed: 25,
-        acceleration: 0.3,
-        braking: 0.6,
-        friction: 0.15
-    };
+    <div class="visual">
 
-    let roadX = 0;
-    let score = 0;
-    let isGasPressed = false;
-    let isBrakePressed = false;
+        <div class="medicine-card">
 
-    // بٹن کنٹرولز (ٹچ اور کلک دونوں کے لیے)
-    const gasBtn = document.getElementById("gasBtn");
-    const brakeBtn = document.getElementById("brakeBtn");
+            <div class="pills">
 
-    gasBtn.addEventListener("mousedown", () => isGasPressed = true);
-    window.addEventListener("mouseup", () => isGasPressed = false);
-    gasBtn.addEventListener("touchstart", (e) => { e.preventDefault(); isGasPressed = true; });
-    window.addEventListener("touchend", () => isGasPressed = false);
+                <div class="pill one"></div>
+                <div class="pill two"></div>
+                <div class="pill three"></div>
 
-    brakeBtn.addEventListener("mousedown", () => isBrakePressed = true);
-    window.addEventListener("mouseup", () => isBrakePressed = false);
-    brakeBtn.addEventListener("touchstart", (e) => { e.preventDefault(); isBrakePressed = true; });
-    window.addEventListener("touchend", () => isBrakePressed = false);
+            </div>
 
-    // کی بورڈ کنٹرولز (تیر والے بٹن یا اسپیس)
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight" || e.key === "d") isGasPressed = true;
-        if (e.key === "ArrowLeft" || e.key === "a") isBrakePressed = true;
-    });
-    window.addEventListener("keyup", (e) => {
-        if (e.key === "ArrowRight" || e.key === "d") isGasPressed = false;
-        if (e.key === "ArrowLeft" || e.key === "a") isBrakePressed = false;
-    });
+            <div class="bottle"></div>
 
-    function update() {
-        // اسپیڈ اور بریک کا منطقی نظام
-        if (isGasPressed) {
-            if (car.speed < car.maxSpeed) {
-                car.speed += car.acceleration;
-            }
-        } else if (isBrakePressed) {
-            if (car.speed > 0) {
-                car.speed -= car.braking;
-            } else if (car.speed > -5) {
-                car.speed -= 0.2; // ریورس
-            }
-        } else {
-            // فرکشن (قدرتی طور پر گاڑی کا سست ہونا)
-            if (car.speed > 0) {
-                car.speed -= car.friction;
-                if (car.speed < 0) car.speed = 0;
-            } else if (car.speed < 0) {
-                car.speed += car.friction;
-                if (car.speed > 0) car.speed = 0;
-            }
-        }
+        </div>
 
-        // روڈ کی موومنٹ
-        roadX -= car.speed;
-        score += Math.floor(car.speed);
-    }
+        <div class="floating one">
+            💊 معیاری میڈیسن
+        </div>
 
-    function draw() {
-        // اسکرین صاف کریں
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        <div class="floating two">
+            🩺 Health Care
+        </div>
 
-        // ۱. بیک گراؤنڈ مونوگرام اور لوگو (واٹر مارک)
-        ctx.save();
-        ctx.font = "bold 70px Arial";
-        ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
-        ctx.textAlign = "center";
-        ctx.fillText("TURBO CLIMB 2.5D", canvas.width / 2, canvas.height / 2 - 30);
-        ctx.font = "bold 25px Arial";
-        ctx.fillText("آپ کا برانڈ مونوگرام", canvas.width / 2, canvas.height / 2 + 20);
-        ctx.restore();
+    </div>
 
-        // ۲. پہاڑ اور پس منظر (Parallax Background)
-        ctx.fillStyle = "#222533";
-        ctx.beginPath();
-        ctx.moveTo(0, 350);
-        for (let i = 0; i < canvas.width; i += 100) {
-            let hOffset = Math.sin((i + roadX * 0.2) * 0.01) * 40;
-            ctx.lineTo(i, 250 + hOffset);
-        }
-        ctx.lineTo(canvas.width, 350);
-        ctx.lineTo(0, 350);
-        ctx.fill();
+</section>
 
-        // ۳. زمین اور روڈ (Flat & Plane Track)
-        ctx.fillStyle = "#333";
-        ctx.fillRect(0, 350, canvas.width, 100);
 
-        // روڈ کی لائنیں جو حرکت کرتی محسوس ہوں
-        ctx.strokeStyle = "#ffcc00";
-        ctx.lineWidth = 4;
-        ctx.setLineDash([30, 20]);
-        ctx.lineDashOffset = roadX;
-        ctx.beginPath();
-        ctx.moveTo(0, 400);
-        ctx.lineTo(canvas.width, 400);
-        ctx.stroke();
-        ctx.setLineDash([]); // ری سیٹ
+<div class="stats">
 
-        // ۴. گاڑی (Car Drawing)
-        ctx.save();
-        ctx.translate(car.x, car.y);
-        
-        // گاڑی کی باڈی
-        ctx.fillStyle = "#ff3333";
-        ctx.fillRect(0, 0, car.width, car.height);
-        // چھت
-        ctx.fillStyle = "#ff6666";
-        ctx.fillRect(20, -15, 50, 15);
+    <div class="stat">
+        <h3>10+</h3>
+        <p>سال کا تجربہ</p>
+    </div>
 
-        // ویلز (پہیے)
-        ctx.fillStyle = "#000";
-        ctx.beginPath();
-        ctx.arc(20, car.height, 12, 0, Math.PI * 2);
-        ctx.arc(car.width - 20, car.height, 12, 0, Math.PI * 2);
-        ctx.fill();
+    <div class="stat">
+        <h3>5K+</h3>
+        <p>خوش گاہک</p>
+    </div>
 
-        ctx.restore();
+    <div class="stat">
+        <h3>24/7</h3>
+        <p>رابطے کی سہولت</p>
+    </div>
 
-        // ۵. اسکور بورڈ اپڈیٹ
-        let displaySpeed = Math.floor(car.speed * 8);
-        scoreBoard.innerText = `اسپیڈ: ${displaySpeed} کلومیٹر/گھنٹہ | سکور: ${Math.floor(score / 10)}`;
-    }
+    <div class="stat">
+        <h3>100%</h3>
+        <p>کسٹمر کیئر</p>
+    </div>
 
-    function gameLoop() {
-        update();
-        draw();
-        requestAnimationFrame(gameLoop);
-    }
+</div>
 
-    gameLoop();
-</script>
+
+<section id="services">
+
+    <div class="section-title">
+        <span>ہماری سہولیات</span>
+        <h2>آپ کے لیے کیا موجود ہے؟</h2>
+        <p>صحت سے متعلق ضروریات کے لیے آسان اور قابل اعتماد سہولت</p>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="icon">💊</div>
+            <h3>Medical Products</h3>
+            <p>
+                روزمرہ استعمال کی ادویات اور مختلف
+                ہیلتھ کیئر پراڈکٹس ایک جگہ۔
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🚚</div>
+            <h3>Home Delivery</h3>
+            <p>
+                اپنے علاقے میں دستیاب ہونے کی صورت میں
+                گھر تک پراڈکٹس پہنچانے کی سہولت۔
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">💬</div>
+            <h3>Easy Contact</h3>
+            <p>
+                کسی بھی پراڈکٹ یا دستیابی کے بارے میں
+                فون پر آسانی سے معلومات حاصل کریں۔
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="products">
+
+    <div class="section-title">
+        <span>Featured Products</span>
+        <h2>مشہور پراڈکٹس</h2>
+        <p>اپنی ضرورت کی پراڈکٹ کے بارے میں ہم سے رابطہ کریں</p>
+    </div>
+
+    <div class="products">
+
+        <div class="product">
+            <div class="product-img">💊</div>
+            <h3>Panadol</h3>
+            <p>عام استعمال کی دوا</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🧴</div>
+            <h3>Multivitamins</h3>
+            <p>ہیلتھ سپلیمنٹس</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🌡️</div>
+            <h3>Thermometer</h3>
+            <p>ڈیجیٹل تھرمامیٹر</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🩹</div>
+            <h3>First Aid Kit</h3>
+            <p>فرسٹ ایڈ ضروریات</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🩺</div>
+            <h3>BP Monitor</h3>
+            <p>بلڈ پریشر مانیٹر</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🧴</div>
+            <h3>Hand Sanitizer</h3>
+            <p>ہینڈ سینیٹائزر</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">😷</div>
+            <h3>Face Masks</h3>
+            <p>حفاظتی ماسکس</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+        <div class="product">
+            <div class="product-img">🩹</div>
+            <h3>Medical Bandage</h3>
+            <p>میڈیکل بینڈیج</p>
+            <a href="tel:+92418722336">قیمت معلوم کریں</a>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="about">
+
+    <div class="about">
+
+        <div class="about-box">
+
+            <span style="color:#35e1ae">
+                ABOUT AL-SHIFA
+            </span>
+
+            <h2>
+                آپ کی صحت،
+                ہماری ذمہ داری
+            </h2>
+
+            <p>
+                Al-Shifa Medical Store فیصل آباد میں
+                آپ کی روزمرہ صحت سے متعلق ضروریات کے لیے
+                ایک آسان اور دوستانہ مقام ہے۔
+                ہمارا مقصد معیاری پراڈکٹس اور بہتر
+                کسٹمر سروس فراہم کرنا ہے۔
+            </p>
+
+        </div>
+
+        <div class="about-box">
+
+            <div class="icon">✚</div>
+
+            <h3>ہم سے رابطہ کریں</h3>
+
+            <p>
+                کسی دوا، میڈیکل پراڈکٹ یا دستیابی کے بارے میں
+                معلومات کے لیے ہمیں کال کریں۔
+            </p>
+
+            <br>
+
+            <a class="btn btn-primary"
+               href="tel:+92418722336">
+                📞 041-8722336
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="cta">
+
+    <h2>اپنی صحت کا خیال آج ہی رکھیں</h2>
+
+    <p>
+        کسی پراڈکٹ کی معلومات یا دستیابی کے لیے ہم سے رابطہ کریں۔
+    </p>
+
+    <a class="btn btn-primary"
+       href="tel:+92418722336">
+        📞 ابھی رابطہ کریں
+    </a>
+
+</div>
+
+
+<section id="contact">
+
+    <div class="section-title">
+        <span>CONTACT</span>
+        <h2>ہم سے رابطہ کریں</h2>
+    </div>
+
+    <div class="contact">
+
+        <div class="contact-box">
+
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div>
+                    <strong>پتہ</strong>
+                    <p>
+                        Satayana Road, Shadman Colony,
+                        Faisalabad
+                    </p>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div>
+                    <strong>فون</strong>
+                    <p>041-8722336</p>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="contact-icon">🕐</div>
+                <div>
+                    <strong>اوقات کار</strong>
+                    <p>دکان کے اصل اوقات یہاں درج کریں</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="contact-box"
+             style="
+             min-height:300px;
+             display:grid;
+             place-items:center;
+             text-align:center;
+             ">
+
+            <div>
+                <div style="font-size:55px">📍</div>
+
+                <h3>Satayana Road</h3>
+
+                <p style="color:#aabebe;margin:10px 0 20px">
+                    Shadman Colony, Faisalabad
+                </p>
+
+                <a class="btn btn-primary"
+                   target="_blank"
+                   href="https://www.google.com/maps/search/?api=1&query=94V8%2BHQC%2C%20Satayana%20Rd%2C%20Shadman%20Colony%2C%20Faisalabad">
+                    🗺️ Google Maps پر دیکھیں
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    © 2026 Al-Shifa Medical Store — All Rights Reserved
+</footer>
+
+
+<a class="whatsapp"
+   href="tel:+92418722336"
+   aria-label="Call">
+    📞
+</a>
 
 </body>
 </html>
