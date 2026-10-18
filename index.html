@@ -1,1106 +1,294 @@
+
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="ur">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Al-Shifa Medical Store | Faisalabad</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rizwan AI Cricket Studio</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:"Vazirmatn","Noto Naskh Arabic",sans-serif;
-    background:#061315;
-    color:#fff;
-    overflow-x:hidden;
-}
-
-/* BACKGROUND */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-3;
-    background:
-    linear-gradient(
-        rgba(3,20,22,.88),
-        rgba(3,20,22,.94)
-    ),
-    url("https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=2000&q=85")
-    center/cover no-repeat;
-}
-
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-2;
-    background:
-    radial-gradient(circle at 15% 20%,rgba(32,211,150,.18),transparent 30%),
-    radial-gradient(circle at 85% 70%,rgba(0,183,255,.12),transparent 32%);
-    pointer-events:none;
-}
-
-/* HEADER */
-header{
-    position:fixed;
-    top:16px;
-    left:4%;
-    right:4%;
-    z-index:1000;
-    padding:13px 20px;
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:20px;
-    background:rgba(5,28,30,.72);
-    backdrop-filter:blur(18px);
-    box-shadow:0 15px 45px rgba(0,0,0,.25);
-}
-
-.nav{
-    max-width:1250px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:20px;
-    font-weight:800;
-}
-
-.logo-icon{
-    width:43px;
-    height:43px;
-    display:grid;
-    place-items:center;
-    border-radius:13px;
-    background:linear-gradient(135deg,#16d9a0,#0bb5c7);
-    color:white;
-    font-size:25px;
-    box-shadow:0 8px 25px rgba(20,215,165,.25);
-}
-
-nav{
-    display:flex;
-    gap:28px;
-}
-
-nav a{
-    color:#d9eeee;
-    text-decoration:none;
-    font-size:14px;
-    transition:.3s;
-}
-
-nav a:hover{
-    color:#35e5b0;
-}
-
-.call-btn{
-    text-decoration:none;
-    color:white;
-    background:linear-gradient(135deg,#10c997,#0aa9bd);
-    padding:11px 17px;
-    border-radius:12px;
-    font-size:14px;
-    font-weight:700;
-}
-
-.menu{
-    display:none;
-    font-size:26px;
-    cursor:pointer;
-}
-
-/* HERO */
-.hero{
-    min-height:100vh;
-    max-width:1250px;
-    margin:auto;
-    padding:150px 25px 80px;
-    display:grid;
-    grid-template-columns:1.15fr .85fr;
-    align-items:center;
-    gap:60px;
-}
-
-.badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 14px;
-    border-radius:30px;
-    background:rgba(22,217,160,.1);
-    border:1px solid rgba(22,217,160,.25);
-    color:#54e8ba;
-    font-size:13px;
-    margin-bottom:22px;
-}
-
-.badge span{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#32e3aa;
-    box-shadow:0 0 12px #32e3aa;
-}
-
-h1{
-    font-size:clamp(42px,6vw,75px);
-    line-height:1.15;
-    font-weight:800;
-    letter-spacing:-2px;
-}
-
-h1 strong{
-    color:#32e0ad;
-}
-
-.hero-text{
-    color:#c2d4d4;
-    font-size:17px;
-    line-height:2;
-    margin:25px 0;
-    max-width:650px;
-}
-
-.actions{
-    display:flex;
-    flex-wrap:wrap;
-    gap:13px;
-}
-
-.btn{
-    text-decoration:none;
-    padding:14px 23px;
-    border-radius:14px;
-    font-weight:700;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:translateY(-3px);
-}
-
-.btn-primary{
-    color:white;
-    background:linear-gradient(135deg,#11ce9a,#079db5);
-    box-shadow:0 12px 30px rgba(10,200,150,.18);
-}
-
-.btn-secondary{
-    color:#dff;
-    border:1px solid rgba(255,255,255,.15);
-    background:rgba(255,255,255,.06);
-}
-
-/* MEDICINE VISUAL */
-.visual{
-    position:relative;
-    height:520px;
-    display:grid;
-    place-items:center;
-}
-
-.medicine-card{
-    position:relative;
-    width:330px;
-    height:390px;
-    border-radius:35px;
-    background:
-    linear-gradient(
-        145deg,
-        rgba(255,255,255,.17),
-        rgba(255,255,255,.045)
-    );
-    border:1px solid rgba(255,255,255,.2);
-    backdrop-filter:blur(15px);
-    box-shadow:0 30px 80px rgba(0,0,0,.45);
-    overflow:hidden;
-}
-
-.medicine-card::before{
-    content:"";
-    position:absolute;
-    width:250px;
-    height:250px;
-    border-radius:50%;
-    background:rgba(35,221,170,.18);
-    filter:blur(35px);
-    top:-80px;
-    right:-70px;
-}
-
-.pills{
-    position:absolute;
-    inset:0;
-}
-
-.pill{
-    position:absolute;
-    width:110px;
-    height:42px;
-    border-radius:40px;
-    background:linear-gradient(90deg,#fff 50%,#31d8ac 50%);
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-    transform:rotate(-35deg);
-}
-
-.pill.one{
-    top:85px;
-    left:55px;
-}
-
-.pill.two{
-    top:150px;
-    right:35px;
-    transform:rotate(25deg);
-}
-
-.pill.three{
-    bottom:90px;
-    left:80px;
-    transform:rotate(18deg);
-}
-
-.bottle{
-    position:absolute;
-    width:115px;
-    height:170px;
-    background:linear-gradient(135deg,#f9ffff,#b7e7df);
-    border-radius:20px 20px 25px 25px;
-    bottom:65px;
-    right:100px;
-    box-shadow:0 20px 40px rgba(0,0,0,.25);
-}
-
-.bottle::before{
-    content:"";
-    position:absolute;
-    width:75px;
-    height:28px;
-    top:-22px;
-    left:20px;
-    border-radius:8px 8px 3px 3px;
-    background:#1ccda2;
-}
-
-.bottle::after{
-    content:"AL-SHIFA";
-    position:absolute;
-    left:13px;
-    right:13px;
-    top:55px;
-    padding:13px 3px;
-    text-align:center;
-    border-radius:8px;
-    background:#fff;
-    color:#087c70;
-    font-size:12px;
-    font-weight:800;
-}
-
-.floating{
-    position:absolute;
-    padding:13px 17px;
-    border-radius:15px;
-    background:rgba(7,30,32,.82);
-    border:1px solid rgba(255,255,255,.13);
-    backdrop-filter:blur(12px);
-    box-shadow:0 15px 35px rgba(0,0,0,.25);
-}
-
-.floating.one{
-    top:80px;
-    right:-20px;
-}
-
-.floating.two{
-    bottom:75px;
-    left:-25px;
-}
-
-/* STATS */
-.stats{
-    max-width:1100px;
-    margin:-20px auto 80px;
-    padding:0 20px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-}
-
-.stat{
-    padding:25px;
-    text-align:center;
-    border-radius:20px;
-    background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.1);
-    backdrop-filter:blur(10px);
-}
-
-.stat h3{
-    font-size:29px;
-    color:#35e1ae;
-}
-
-.stat p{
-    color:#a9bebe;
-    font-size:13px;
-    margin-top:5px;
-}
-
-/* SECTIONS */
-section{
-    max-width:1250px;
-    margin:auto;
-    padding:90px 25px;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:45px;
-}
-
-.section-title span{
-    color:#35e1ae;
-    font-size:14px;
-    font-weight:700;
-}
-
-.section-title h2{
-    font-size:38px;
-    margin:10px 0;
-}
-
-.section-title p{
-    color:#a9bebe;
-}
-
-/* CARDS */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-}
-
-.card{
-    padding:30px;
-    border-radius:25px;
-    background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.1);
-    backdrop-filter:blur(12px);
-    transition:.35s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-    border-color:rgba(53,225,174,.3);
-}
-
-.icon{
-    width:58px;
-    height:58px;
-    border-radius:17px;
-    display:grid;
-    place-items:center;
-    background:rgba(30,215,166,.12);
-    color:#35e1ae;
-    font-size:27px;
-    margin-bottom:20px;
-}
-
-.card h3{
-    margin-bottom:10px;
-}
-
-.card p{
-    color:#aabebe;
-    line-height:1.9;
-    font-size:14px;
-}
-
-/* PRODUCTS */
-.products{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:17px;
-}
-
-.product{
-    padding:20px;
-    border-radius:22px;
-    background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.1);
-    transition:.3s;
-}
-
-.product:hover{
-    transform:translateY(-5px);
-}
-
-.product-img{
-    height:150px;
-    border-radius:17px;
-    display:grid;
-    place-items:center;
-    font-size:65px;
-    background:linear-gradient(135deg,rgba(30,220,170,.13),rgba(0,160,190,.12));
-    margin-bottom:17px;
-}
-
-.product h3{
-    font-size:16px;
-}
-
-.product p{
-    color:#9eb2b2;
-    font-size:13px;
-    margin:6px 0 15px;
-}
-
-.product a{
-    display:block;
-    text-align:center;
-    text-decoration:none;
-    padding:10px;
-    border-radius:11px;
-    background:#0fbf96;
-    color:white;
-    font-size:13px;
-}
-
-/* ABOUT */
-.about{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:50px;
-    align-items:center;
-}
-
-.about-box{
-    padding:40px;
-    border-radius:30px;
-    background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.1);
-}
-
-.about-box h2{
-    font-size:38px;
-    margin-bottom:20px;
-}
-
-.about-box p{
-    color:#afc1c1;
-    line-height:2;
-}
-
-/* CONTACT */
-.contact{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:25px;
-}
-
-.contact-box{
-    padding:30px;
-    border-radius:25px;
-    background:rgba(255,255,255,.055);
-    border:1px solid rgba(255,255,255,.1);
-}
-
-.contact-item{
-    display:flex;
-    gap:15px;
-    align-items:center;
-    padding:17px 0;
-    border-bottom:1px solid rgba(255,255,255,.07);
-}
-
-.contact-item:last-child{
-    border-bottom:0;
-}
-
-.contact-icon{
-    width:45px;
-    height:45px;
-    border-radius:13px;
-    background:rgba(30,215,166,.12);
-    display:grid;
-    place-items:center;
-    color:#35e1ae;
-}
-
-.contact-item p{
-    color:#aabebe;
-    font-size:13px;
-    margin-top:3px;
-}
-
-/* CTA */
-.cta{
-    margin:50px auto;
-    max-width:1100px;
-    padding:55px 35px;
-    border-radius:35px;
-    text-align:center;
-    background:
-    linear-gradient(
-        135deg,
-        rgba(18,201,153,.18),
-        rgba(0,148,180,.13)
-    );
-    border:1px solid rgba(50,225,174,.2);
-}
-
-.cta h2{
-    font-size:38px;
-    margin-bottom:12px;
-}
-
-.cta p{
-    color:#aec1c1;
-    margin-bottom:25px;
-}
-
-/* FOOTER */
-footer{
-    padding:35px 20px;
-    text-align:center;
-    border-top:1px solid rgba(255,255,255,.08);
-    color:#829999;
-    font-size:13px;
-}
-
-/* WHATSAPP */
-.whatsapp{
-    position:fixed;
-    left:20px;
-    bottom:22px;
-    width:58px;
-    height:58px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    background:#20d466;
-    color:white;
-    font-size:27px;
-    text-decoration:none;
-    box-shadow:0 12px 35px rgba(32,212,102,.3);
-    z-index:999;
-}
-
-/* MOBILE */
-@media(max-width:900px){
-
-    nav,
-    .call-btn{
-        display:none;
-    }
-
-    .menu{
-        display:block;
-    }
-
-    .hero{
-        grid-template-columns:1fr;
-        text-align:center;
-        padding-top:135px;
-    }
-
-    .hero-text{
-        margin-left:auto;
-        margin-right:auto;
-    }
-
-    .actions{
-        justify-content:center;
-    }
-
-    .visual{
-        height:430px;
-    }
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .cards{
-        grid-template-columns:1fr;
-    }
-
-    .products{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .about,
-    .contact{
-        grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:550px){
-
-    header{
-        left:12px;
-        right:12px;
-    }
-
-    h1{
-        font-size:43px;
-    }
-
-    .hero{
-        padding-left:18px;
-        padding-right:18px;
-    }
-
-    section{
-        padding:65px 18px;
-    }
-
-    .medicine-card{
-        width:280px;
-        height:350px;
-    }
-
-    .floating.one{
-        right:-5px;
-    }
-
-    .floating.two{
-        left:-5px;
-    }
-
-    .products{
-        grid-template-columns:1fr 1fr;
-        gap:10px;
-    }
-
-    .product{
-        padding:13px;
-    }
-
-    .product-img{
-        height:120px;
-        font-size:50px;
-    }
-
-    .section-title h2{
-        font-size:30px;
-    }
-
-    .cta h2{
-        font-size:29px;
-    }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#08111e;color:#fff;font-family:Arial,sans-serif}
+header{background:#102b36;text-align:center;padding:18px;border-bottom:2px solid #19e68c}
+header h1{color:#19e68c;margin:0;font-size:25px}
+header p{margin:8px 0 0}
+main{max-width:1000px;margin:auto;padding:12px}
+.panel{background:#112131;border:1px solid #294452;border-radius:12px;padding:14px;margin-bottom:14px}
+h2{color:#19e68c;font-size:19px;margin-top:0}
+input,button,select{padding:11px;border-radius:7px;font-size:15px;margin:4px 0}
+input,select{width:100%;background:#07111f;color:#fff;border:1px solid #405565}
+button{background:#19e68c;color:#07111f;border:0;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px}
+.row{display:flex;gap:7px;flex-wrap:wrap}
+.row>*{flex:1;min-width:100px}
+.small{font-size:12px;line-height:1.6;color:#b9cbd6}
+.preview{position:relative;background:#000;overflow:hidden;border-radius:8px;min-height:150px}
+iframe{width:100%;height:360px;border:0;background:white}
+#cropBox{position:absolute;left:10%;top:20%;width:75%;height:30%;border:3px dashed #19e68c;display:none;pointer-events:none}
+#board{background:linear-gradient(110deg,#071b31,#126c53);border:2px solid #19e68c;border-radius:10px;text-align:center;padding:18px;margin:10px 0;overflow:hidden}
+#score{font-size:43px;font-weight:bold}
+#board.layout2{background:linear-gradient(90deg,#581c30,#101725);border-color:#ffd16a}
+#board.layout3{background:#eee;color:#111;border-color:#777}
+#board.layout4{background:#442080;border-color:#e1b8ff}
+#board.layout5{background:#111;color:#ffda43;border-color:#ffda43}
+#board.layout6{background:linear-gradient(90deg,#082e61,#087f8c);border-color:#65eaff}
+#board.transparent{background:transparent!important}
+#playerPhoto{max-width:90px;max-height:90px;object-fit:cover;border-radius:50%;display:none}
+a{color:#72eeb7;overflow-wrap:anywhere}
+body.overlay header,body.overlay #controls{display:none}
+body.overlay main{padding:0;max-width:none}
+body.overlay .panel:not(.scorePanel){display:none}
+body.overlay #board{border:0;border-radius:0;margin:0}
 </style>
 </head>
-
 <body>
-
 <header>
-    <div class="nav">
-
-        <div class="logo">
-            <div class="logo-icon">✚</div>
-            <span>Al-Shifa Medical Store</span>
-        </div>
-
-        <nav>
-            <a href="#home">ہوم</a>
-            <a href="#services">سروسز</a>
-            <a href="#products">پروڈکٹس</a>
-            <a href="#about">ہمارے بارے میں</a>
-            <a href="#contact">رابطہ</a>
-        </nav>
-
-        <a class="call-btn" href="tel:+92418722336">
-            📞 کال کریں
-        </a>
-
-        <div class="menu">☰</div>
-
-    </div>
+<h1>🏏 رضوان اے آئی کرکٹ اسٹوڈیو</h1>
+<p>لائیو اسکور بورڈ، کراپ اور اسٹریمنگ ٹولز</p>
 </header>
 
-
-<main id="home">
-
-<section class="hero">
-
-    <div>
-
-        <div class="badge">
-            <span></span>
-            آپ کی صحت، ہماری ترجیح
-        </div>
-
-        <h1>
-            صحت کی دیکھ بھال
-            <br>
-            اب مزید <strong>آسان</strong>
-        </h1>
-
-        <p class="hero-text">
-            Al-Shifa Medical Store پر معیاری ادویات،
-            ہیلتھ کیئر پراڈکٹس اور روزمرہ طبی ضروریات
-            ایک ہی جگہ پر حاصل کریں۔
-        </p>
-
-        <div class="actions">
-
-            <a class="btn btn-primary"
-               href="tel:+92418722336">
-                📞 ابھی کال کریں
-            </a>
-
-            <a class="btn btn-secondary"
-               href="#products">
-                💊 پروڈکٹس دیکھیں
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <div class="visual">
-
-        <div class="medicine-card">
-
-            <div class="pills">
-
-                <div class="pill one"></div>
-                <div class="pill two"></div>
-                <div class="pill three"></div>
-
-            </div>
-
-            <div class="bottle"></div>
-
-        </div>
-
-        <div class="floating one">
-            💊 معیاری میڈیسن
-        </div>
-
-        <div class="floating two">
-            🩺 Health Care
-        </div>
-
-    </div>
-
+<main>
+<div id="controls">
+<section class="panel">
+<h2>🌐 کرکٹ ویب سائٹ کھولیں</h2>
+<label for="url">ویب سائٹ کا لنک یہاں پیسٹ کریں</label>
+<input id="url" type="url" placeholder="https://example.com/live-score">
+<div class="row">
+<button onclick="openPreview()">ویب سائٹ اندر کھولیں</button>
+<button onclick="openNewTab()">نئے ٹیب میں کھولیں</button>
+</div>
+<div class="preview" id="preview">
+<iframe id="frame" title="ویب سائٹ پری ویو"></iframe>
+<div id="cropBox"></div>
+</div>
+<p class="small">اگر ویب سائٹ اندر نہ کھلے تو نئے ٹیب میں کھولیں۔ ہر ویب سائٹ اپنی سکیورٹی کی وجہ سے اندر کھلنے کی اجازت نہیں دیتی۔</p>
 </section>
 
+<section class="panel">
+<h2>✂️ کراپ ٹول</h2>
+<p class="small">یہ باکس پری ویو پر انتخاب دکھاتا ہے۔ کراپ باکس کو انگلی سے گھسیٹ کر مطلوبہ جگہ پر رکھ سکتے ہو۔ یہ خود دوسری ویب سائٹ کا مواد نہیں پڑھتا۔</p>
+<button onclick="toggleCrop()">کراپ باکس دکھائیں / چھپائیں</button>
+<button onclick="capturePreview()">پری ویو کا اسکرین شاٹ منتخب کریں</button>
+<input id="shot" type="file" accept="image/*">
+<div id="imageArea" style="position:relative;display:none;overflow:auto">
+<img id="shotImage" alt="منتخب تصویر" style="max-width:100%;display:block">
+<div id="imageCrop" style="position:absolute;left:10%;top:15%;width:70%;height:35%;border:3px dashed #19e68c;touch-action:none"></div>
+</div>
+<button onclick="downloadCrop()">منتخب کراپ محفوظ کریں</button>
+</section>
 
-<div class="stats">
+<section class="panel">
+<h2>🏏 اسکور کنٹرول</h2>
+<div class="row">
+<input id="team1" value="PAKISTAN" placeholder="پہلی ٹیم">
+<input id="team2" value="ENGLAND" placeholder="دوسری ٹیم">
+</div>
+<div class="row">
+<input id="runs" type="number" min="0" value="0" placeholder="رنز">
+<input id="wickets" type="number" min="0" max="10" value="0" placeholder="وکٹیں">
+<input id="overs" value="0.0" placeholder="اوورز">
+</div>
+<div class="row">
+<input id="bat1" value="بیٹر 1" placeholder="بیٹر 1">
+<input id="batRun1" type="number" min="0" value="0" placeholder="بیٹر کے رنز">
+</div>
+<div class="row">
+<input id="bat2" value="بیٹر 2" placeholder="بیٹر 2">
+<input id="batRun2" type="number" min="0" value="0" placeholder="بیٹر کے رنز">
+</div>
+<div class="row">
+<input id="bowler" value="بولر" placeholder="بولر">
+<input id="bowlerW" type="number" min="0" value="0" placeholder="بولر کی وکٹیں">
+</div>
+<div class="grid">
+<button onclick="addRuns(1)">+1 رن</button>
+<button onclick="addRuns(4)">+4 رنز</button>
+<button onclick="addRuns(6)">+6 رنز</button>
+<button onclick="addWicket()">وکٹ</button>
+<button onclick="saveScore()">اسکور محفوظ کریں</button>
+<button onclick="resetScore()">اسکور ری سیٹ کریں</button>
+</div>
+</section>
 
-    <div class="stat">
-        <h3>10+</h3>
-        <p>سال کا تجربہ</p>
-    </div>
+<section class="panel">
+<h2>🎨 چھ پروفیشنل ڈیزائن</h2>
+<div class="grid">
+<button onclick="setLayout(1)">گرین پرو</button>
+<button onclick="setLayout(2)">ٹی وی اسٹائل</button>
+<button onclick="setLayout(3)">لائٹ اسٹائل</button>
+<button onclick="setLayout(4)">پرپل پرو</button>
+<button onclick="setLayout(5)">بلیک گولڈ</button>
+<button onclick="setLayout(6)">بلیو لائیو</button>
+</div>
+</section>
 
-    <div class="stat">
-        <h3>5K+</h3>
-        <p>خوش گاہک</p>
-    </div>
+<section class="panel">
+<h2>🖼️ کھلاڑی کی تصویر</h2>
+<input id="playerFile" type="file" accept="image/*">
+<p class="small">اپنے موبائل سے کھلاڑی کی تصویر منتخب کرو۔</p>
+</section>
 
-    <div class="stat">
-        <h3>24/7</h3>
-        <p>رابطے کی سہولت</p>
-    </div>
+<section class="panel">
+<h2>⚙️ سائز اور پس منظر</h2>
+<label>اسکور بورڈ کا سائز</label>
+<input type="range" min="60" max="140" value="100" oninput="resizeBoard(this.value)">
+<label>پس منظر کی شفافیت</label>
+<input type="range" min="0" max="100" value="100" oninput="setOpacity(this.value)">
+<button onclick="toggleTransparency()">شفاف پس منظر آن / آف</button>
+</section>
 
-    <div class="stat">
-        <h3>100%</h3>
-        <p>کسٹمر کیئر</p>
-    </div>
-
+<section class="panel">
+<h2>🔗 OBS اور PRISM Live</h2>
+<button onclick="makeLink()">اسکور بورڈ لنک بنائیں</button>
+<p id="result"></p>
+<button onclick="copyLink()">لنک کاپی کریں</button>
+<p class="small">لنک کو OBS کے Browser Source میں استعمال کیا جا سکتا ہے۔ ویب سائٹ آن لائن شائع ہونا ضروری ہے۔</p>
+</section>
 </div>
 
-
-<section id="services">
-
-    <div class="section-title">
-        <span>ہماری سہولیات</span>
-        <h2>آپ کے لیے کیا موجود ہے؟</h2>
-        <p>صحت سے متعلق ضروریات کے لیے آسان اور قابل اعتماد سہولت</p>
-    </div>
-
-    <div class="cards">
-
-        <div class="card">
-            <div class="icon">💊</div>
-            <h3>Medical Products</h3>
-            <p>
-                روزمرہ استعمال کی ادویات اور مختلف
-                ہیلتھ کیئر پراڈکٹس ایک جگہ۔
-            </p>
-        </div>
-
-        <div class="card">
-            <div class="icon">🚚</div>
-            <h3>Home Delivery</h3>
-            <p>
-                اپنے علاقے میں دستیاب ہونے کی صورت میں
-                گھر تک پراڈکٹس پہنچانے کی سہولت۔
-            </p>
-        </div>
-
-        <div class="card">
-            <div class="icon">💬</div>
-            <h3>Easy Contact</h3>
-            <p>
-                کسی بھی پراڈکٹ یا دستیابی کے بارے میں
-                فون پر آسانی سے معلومات حاصل کریں۔
-            </p>
-        </div>
-
-    </div>
-
-</section>
-
-
-<section id="products">
-
-    <div class="section-title">
-        <span>Featured Products</span>
-        <h2>مشہور پراڈکٹس</h2>
-        <p>اپنی ضرورت کی پراڈکٹ کے بارے میں ہم سے رابطہ کریں</p>
-    </div>
-
-    <div class="products">
-
-        <div class="product">
-            <div class="product-img">💊</div>
-            <h3>Panadol</h3>
-            <p>عام استعمال کی دوا</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🧴</div>
-            <h3>Multivitamins</h3>
-            <p>ہیلتھ سپلیمنٹس</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🌡️</div>
-            <h3>Thermometer</h3>
-            <p>ڈیجیٹل تھرمامیٹر</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🩹</div>
-            <h3>First Aid Kit</h3>
-            <p>فرسٹ ایڈ ضروریات</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🩺</div>
-            <h3>BP Monitor</h3>
-            <p>بلڈ پریشر مانیٹر</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🧴</div>
-            <h3>Hand Sanitizer</h3>
-            <p>ہینڈ سینیٹائزر</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">😷</div>
-            <h3>Face Masks</h3>
-            <p>حفاظتی ماسکس</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-        <div class="product">
-            <div class="product-img">🩹</div>
-            <h3>Medical Bandage</h3>
-            <p>میڈیکل بینڈیج</p>
-            <a href="tel:+92418722336">قیمت معلوم کریں</a>
-        </div>
-
-    </div>
-
-</section>
-
-
-<section id="about">
-
-    <div class="about">
-
-        <div class="about-box">
-
-            <span style="color:#35e1ae">
-                ABOUT AL-SHIFA
-            </span>
-
-            <h2>
-                آپ کی صحت،
-                ہماری ذمہ داری
-            </h2>
-
-            <p>
-                Al-Shifa Medical Store فیصل آباد میں
-                آپ کی روزمرہ صحت سے متعلق ضروریات کے لیے
-                ایک آسان اور دوستانہ مقام ہے۔
-                ہمارا مقصد معیاری پراڈکٹس اور بہتر
-                کسٹمر سروس فراہم کرنا ہے۔
-            </p>
-
-        </div>
-
-        <div class="about-box">
-
-            <div class="icon">✚</div>
-
-            <h3>ہم سے رابطہ کریں</h3>
-
-            <p>
-                کسی دوا، میڈیکل پراڈکٹ یا دستیابی کے بارے میں
-                معلومات کے لیے ہمیں کال کریں۔
-            </p>
-
-            <br>
-
-            <a class="btn btn-primary"
-               href="tel:+92418722336">
-                📞 041-8722336
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<div class="cta">
-
-    <h2>اپنی صحت کا خیال آج ہی رکھیں</h2>
-
-    <p>
-        کسی پراڈکٹ کی معلومات یا دستیابی کے لیے ہم سے رابطہ کریں۔
-    </p>
-
-    <a class="btn btn-primary"
-       href="tel:+92418722336">
-        📞 ابھی رابطہ کریں
-    </a>
-
+<section class="panel scorePanel">
+<h2>📺 اسکور بورڈ پری ویو</h2>
+<div id="board">
+<div id="match">PAKISTAN بمقابلہ ENGLAND</div>
+<div id="score">0/0</div>
+<div id="overText">اوورز: 0.0</div>
+<div id="batterText">بیٹر 1: 0 | بیٹر 2: 0</div>
+<div id="bowlerText">بولر: 0 وکٹیں</div>
+<img id="playerPhoto" alt="کھلاڑی">
+<div style="margin-top:10px;font-weight:bold">RIZWAN AI CRICKET</div>
 </div>
-
-
-<section id="contact">
-
-    <div class="section-title">
-        <span>CONTACT</span>
-        <h2>ہم سے رابطہ کریں</h2>
-    </div>
-
-    <div class="contact">
-
-        <div class="contact-box">
-
-            <div class="contact-item">
-                <div class="contact-icon">📍</div>
-                <div>
-                    <strong>پتہ</strong>
-                    <p>
-                        Satayana Road, Shadman Colony,
-                        Faisalabad
-                    </p>
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon">📞</div>
-                <div>
-                    <strong>فون</strong>
-                    <p>041-8722336</p>
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon">🕐</div>
-                <div>
-                    <strong>اوقات کار</strong>
-                    <p>دکان کے اصل اوقات یہاں درج کریں</p>
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="contact-box"
-             style="
-             min-height:300px;
-             display:grid;
-             place-items:center;
-             text-align:center;
-             ">
-
-            <div>
-                <div style="font-size:55px">📍</div>
-
-                <h3>Satayana Road</h3>
-
-                <p style="color:#aabebe;margin:10px 0 20px">
-                    Shadman Colony, Faisalabad
-                </p>
-
-                <a class="btn btn-primary"
-                   target="_blank"
-                   href="https://www.google.com/maps/search/?api=1&query=94V8%2BHQC%2C%20Satayana%20Rd%2C%20Shadman%20Colony%2C%20Faisalabad">
-                    🗺️ Google Maps پر دیکھیں
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </section>
-
 </main>
 
-
-<footer>
-    © 2026 Al-Shifa Medical Store — All Rights Reserved
-</footer>
-
-
-<a class="whatsapp"
-   href="tel:+92418722336"
-   aria-label="Call">
-    📞
-</a>
-
+<script>
+const $=id=>document.getElementById(id);
+let layout=1,link="";
+function getData(){
+return {
+team1:$("team1").value,team2:$("team2").value,
+runs:Math.max(0,Number($("runs").value)||0),
+wickets:Math.min(10,Math.max(0,Number($("wickets").value)||0)),
+overs:$("overs").value,bat1:$("bat1").value,
+batRun1:Number($("batRun1").value)||0,
+bat2:$("bat2").value,batRun2:Number($("batRun2").value)||0,
+bowler:$("bowler").value,bowlerW:Number($("bowlerW").value)||0,
+layout
+}}
+function render(d=getData()){
+$("match").textContent=(d.team1||"ٹیم 1")+" بمقابلہ "+(d.team2||"ٹیم 2");
+$("score").textContent=d.runs+"/"+d.wickets;
+$("overText").textContent="اوورز: "+(d.overs||"0.0");
+$("batterText").textContent=(d.bat1||"بیٹر 1")+": "+d.batRun1+" | "+(d.bat2||"بیٹر 2")+": "+d.batRun2;
+$("bowlerText").textContent=(d.bowler||"بولر")+": "+d.bowlerW+" وکٹیں";
+$("board").className=d.layout>1?"layout"+d.layout:"";
+}
+function saveScore(){
+try{localStorage.setItem("rizwanScore",JSON.stringify(getData()))}catch(e){}
+render();
+}
+function addRuns(n){
+$("runs").value=(Number($("runs").value)||0)+n;
+$("batRun1").value=(Number($("batRun1").value)||0)+n;
+saveScore();
+}
+function addWicket(){
+$("wickets").value=Math.min(10,(Number($("wickets").value)||0)+1);
+saveScore();
+}
+function resetScore(){
+if(!confirm("کیا اسکور ری سیٹ کرنا ہے؟"))return;
+$("runs").value=0;$("wickets").value=0;$("overs").value="0.0";
+$("batRun1").value=0;$("batRun2").value=0;$("bowlerW").value=0;
+saveScore();
+}
+function setLayout(n){layout=n;saveScore()}
+function openPreview(){
+let u=$("url").value.trim();
+if(!/^https?:\/\//i.test(u)){alert("مکمل ویب سائٹ لنک درج کریں");return}
+$("frame").src=u;
+}
+function openNewTab(){
+let u=$("url").value.trim();
+if(!/^https?:\/\//i.test(u)){alert("مکمل ویب سائٹ لنک درج کریں");return}
+window.open(u,"_blank","noopener");
+}
+function toggleCrop(){
+const b=$("cropBox");
+b.style.display=b.style.display==="block"?"none":"block";
+}
+function capturePreview(){
+alert("اگر ویب سائٹ کا اسکرین شاٹ درکار ہے تو اسے براؤزر سے اپنے موبائل میں محفوظ کریں، پھر نیچے تصویر منتخب کریں۔ iframe کا اسکرین شاٹ براہ راست لینا براؤزر کی سکیورٹی سے محدود ہے۔");
+$("shot").click();
+}
+$("shot").addEventListener("change",function(){
+const f=this.files&&this.files[0];if(!f)return;
+const r=new FileReader();
+r.onload=()=>{
+$("shotImage").src=r.result;
+$("imageArea").style.display="block";
+};
+r.readAsDataURL(f);
+});
+let dragging=false,dx=0,dy=0;
+$("imageCrop").addEventListener("pointerdown",e=>{
+dragging=true;dx=e.offsetX;dy=e.offsetY;
+$("imageCrop").setPointerCapture(e.pointerId);
+});
+$("imageCrop").addEventListener("pointermove",e=>{
+if(!dragging)return;
+const area=$("imageArea").getBoundingClientRect();
+const x=Math.max(0,Math.min(area.width-$("imageCrop").offsetWidth,e.clientX-area.left-dx));
+const y=Math.max(0,Math.min(area.height-$("imageCrop").offsetHeight,e.clientY-area.top-dy));
+$("imageCrop").style.left=x+"px";
+$("imageCrop").style.top=y+"px";
+});
+$("imageCrop").addEventListener("pointerup",()=>dragging=false);
+function downloadCrop(){
+const img=$("shotImage"),box=$("imageCrop");
+if(!img.src||!img.naturalWidth){alert("پہلے تصویر منتخب کریں");return}
+const scale=img.naturalWidth/img.clientWidth;
+const x=parseFloat(box.style.left||"0")*scale;
+const y=parseFloat(box.style.top||"0")*scale;
+const w=box.clientWidth*scale,h=box.clientHeight*scale;
+const c=document.createElement("canvas");
+c.width=Math.max(1,Math.floor(w));c.height=Math.max(1,Math.floor(h));
+c.getContext("2d").drawImage(img,x,y,w,h,0,0,c.width,c.height);
+const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download="rizwan-score-crop.png";a.click();
+}
+function resizeBoard(v){$("board").style.transform="scale("+v/100+")";$("board").style.transformOrigin="top center"}
+function setOpacity(v){
+$("board").style.background="linear-gradient(110deg,rgba(7,27,49,"+v/100+"),rgba(18,108,83,"+v/100+"))";
+}
+function toggleTransparency(){$("board").classList.toggle("transparent")}
+$("playerFile").addEventListener("change",function(){
+const f=this.files&&this.files[0];if(!f)return;
+const r=new FileReader();r.onload=()=>{
+$("playerPhoto").src=r.result;$("playerPhoto").style.display="inline-block";
+};r.readAsDataURL(f);
+});
+function makeLink(){
+const u=new URL(location.href);u.searchParams.set("overlay","1");link=u.href;
+$("result").innerHTML='<a href="'+link+'" target="_blank" rel="noopener">اسکور بورڈ کھولیں</a>';
+}
+function copyLink(){
+if(!link){makeLink()}
+if(navigator.clipboard){
+navigator.clipboard.writeText(link).then(()=>alert("لنک کاپی ہوگیا")).catch(()=>prompt("لنک کاپی کریں",link));
+}else prompt("لنک کاپی کریں",link);
+}
+document.querySelectorAll("#controls input").forEach(el=>el.addEventListener("input",()=>render()));
+try{
+const d=JSON.parse(localStorage.getItem("rizwanScore")||"null");
+if(d){
+["team1","team2","runs","wickets","overs","bat1","batRun1","bat2","batRun2","bowler","bowlerW"].forEach(k=>{if(d[k]!==undefined)$(k).value=d[k]});
+layout=d.layout||1;
+}
+}catch(e){}
+if(new URLSearchParams(location.search).get("overlay")==="1"){
+document.body.classList.add("overlay");
+$("controls").hidden=true;
+$("board").style.background="transparent";
+}
+render();
+</script>
 </body>
 </html>
