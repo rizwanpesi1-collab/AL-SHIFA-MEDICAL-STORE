@@ -4,155 +4,571 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rizwan AI Cricket Studio</title>
+
 <style>
-body {
-  background: #101827;
-  color: white;
-  font-family: Arial, sans-serif;
-  padding: 15px;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0b1120;
+  color:white;
+  font-family:Arial,sans-serif;
 }
-section {
-  background: #1d2b43;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
+header{
+  padding:14px;
+  background:#050911;
+  border-bottom:2px solid #35df9a;
 }
-input, button {
-  padding: 10px;
-  margin: 5px 0;
-  max-width: 100%;
+h2{margin:0;color:#35df9a}
+main{padding:10px;max-width:1400px;margin:auto}
+.panel{
+  background:#151e2e;
+  border:1px solid #35435b;
+  border-radius:9px;
+  padding:12px;
+  margin-bottom:12px;
 }
-button {
-  background: #10b981;
-  color: white;
-  border: 0;
-  border-radius: 5px;
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:9px;
 }
-iframe {
-  width: 100%;
-  height: 250px;
-  background: white;
+input,select,button{
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #40516b;
+  background:#202b3d;
+  color:white;
+  max-width:100%;
 }
-video, img {
-  max-width: 100%;
+input[type=url]{flex:1;min-width:180px}
+input[type=file]{width:100%}
+button{cursor:pointer;font-weight:bold}
+button:hover{background:#087a53}
+#stage{
+  width:100%;
+  aspect-ratio:16/9;
+  position:relative;
+  background:#000;
+  overflow:hidden;
+  border:2px solid #35df9a;
+}
+.web{
+  position:absolute;
+  width:100%;
+  height:100%;
+  border:0;
+  display:none;
+  background:white;
+}
+#web1{z-index:1}
+#web2{z-index:2}
+#web3{z-index:3}
+#videoLayer,#layoutLayer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:none;
+  pointer-events:none;
+}
+#videoLayer{z-index:4}
+#layoutLayer{z-index:5}
+#cropBox{
+  position:absolute;
+  z-index:10;
+  left:25%;
+  top:25%;
+  width:50%;
+  height:45%;
+  border:2px dashed yellow;
+  box-shadow:0 0 0 9999px #0005;
+  display:none;
+  touch-action:none;
+  cursor:move;
+}
+#resize{
+  position:absolute;
+  right:-2px;
+  bottom:-2px;
+  width:20px;
+  height:20px;
+  background:yellow;
+  cursor:nwse-resize;
+  touch-action:none;
+}
+#status{
+  padding:10px;
+  color:#80ffc1;
+  font-size:13px;
+}
+.small{font-size:12px;color:#bbc8db}
+#canvas{display:none}
+@media(max-width:600px){
+  header{padding:10px}
+  h2{font-size:17px}
 }
 </style>
 </head>
+
 <body>
+<header>
+  <h2>RIZWAN AI CRICKET STUDIO</h2>
+  <div class="controls">
+    <button onclick="fullScreen()">Full Screen</button>
+    <button onclick="resetAll()">Reset</button>
+  </div>
+</header>
 
-<h1>🏏 Rizwan AI Cricket Studio</h1>
+<main>
 
-<section>
-<h2>تین ویب سائٹس</h2>
-<input id="url1" placeholder="Website 1 URL">
-<button onclick="openSite(1)">Open Website 1</button>
-<iframe id="site1"></iframe>
+<section class="panel">
+  <h3>MAIN 16:9 SCREEN</h3>
 
-<input id="url2" placeholder="Website 2 URL">
-<button onclick="openSite(2)">Open Website 2</button>
-<iframe id="site2"></iframe>
+  <div id="stage">
+    <iframe id="web1" class="web" title="Website 1"></iframe>
+    <iframe id="web2" class="web" title="Website 2"></iframe>
+    <iframe id="web3" class="web" title="Website 3"></iframe>
 
-<input id="url3" placeholder="Website 3 URL">
-<button onclick="openSite(3)">Open Website 3</button>
-<iframe id="site3"></iframe>
+    <video id="videoLayer" muted loop autoplay playsinline></video>
+    <img id="layoutLayer" alt="Uploaded layout">
+
+    <div id="cropBox">
+      <div id="resize"></div>
+    </div>
+  </div>
+
+  <div id="status">Ready. Load a website or upload media.</div>
+
+  <div class="controls">
+    <button onclick="showWebsite(1)">Website 1</button>
+    <button onclick="showWebsite(2)">Website 2</button>
+    <button onclick="showWebsite(3)">Website 3</button>
+    <button onclick="showAll()">Show All 3</button>
+    <button onclick="setMix()">Mix Mode</button>
+  </div>
 </section>
 
-<section>
-<h2>اپنی ویڈیو اپلوڈ کریں</h2>
-<input type="file" id="videoFile" accept="video/*">
-<label>
-<input type="checkbox" id="loop" checked> مسلسل لوپ
-</label>
-<br>
-<video id="video" controls loop muted></video>
+<section class="panel">
+  <h3>1. WEBSITE SOURCES</h3>
+
+  <label>Website 1 URL</label>
+  <input id="url1" type="url"
+    value="https://www.espn.in/cricket/series/1550706/scorecard/1550713/pakistan-vs-sri-lanka-1st-match-pakistan-odi-tri-series-2026-27">
+
+  <button onclick="loadSite(1)">Load Website 1</button>
+
+  <label>Website 2 URL</label>
+  <input id="url2" type="url" placeholder="Paste website URL">
+  <button onclick="loadSite(2)">Load Website 2</button>
+
+  <label>Website 3 URL</label>
+  <input id="url3" type="url" placeholder="Paste website URL">
+  <button onclick="loadSite(3)">Load Website 3</button>
+
+  <div class="controls">
+    <button onclick="reloadSites()">Reload Websites</button>
+    <button onclick="hideSites()">Hide Websites</button>
+  </div>
+
+  <p class="small">
+    Some websites block iframe embedding. If a site refuses to open,
+    normal HTML cannot force it to load inside this screen.
+  </p>
 </section>
 
-<section>
-<h2>تصویر کا بیک گراؤنڈ ریموو</h2>
-<input type="file" id="imageFile" accept="image/*">
-<br>
-<button onclick="removeBackground()">سفید رنگ شفاف کریں</button>
-<br>
-<canvas id="canvas"></canvas>
-<button onclick="downloadPNG()">PNG ڈاؤن لوڈ کریں</button>
+<section class="panel">
+  <h3>2. VIDEO AND LAYOUT</h3>
+
+  <label>Upload video</label>
+  <input id="videoFile" type="file" accept="video/*">
+
+  <div class="controls">
+    <button onclick="showVideo()">Show Video</button>
+    <button onclick="hideVideo()">Hide Video</button>
+  </div>
+
+  <label>Upload image or layout</label>
+  <input id="imageFile" type="file" accept="image/*">
+
+  <div class="controls">
+    <button onclick="showLayout()">Show Layout</button>
+    <button onclick="hideLayout()">Hide Layout</button>
+  </div>
+
+  <p class="small">
+    Transparent PNG layouts work best for overlays.
+  </p>
 </section>
+
+<section class="panel">
+  <h3>3. CROP AND ZOOM</h3>
+
+  <div class="controls">
+    <button onclick="enableCrop()">Enable Crop</button>
+    <button onclick="applyCrop()">OK / Apply Crop</button>
+    <button onclick="disableCrop()">Hide Crop Box</button>
+    <button onclick="resetCrop()">Reset Crop</button>
+  </div>
+
+  <label>Zoom: <span id="zoomText">1.0x</span></label>
+  <input id="zoom" type="range" min="1" max="4" step="0.1"
+    value="1" oninput="zoomContent(this.value)">
+
+  <p class="small">
+    Drag the yellow box to move it. Drag its corner to resize.
+    Applying the crop zooms the visible website frame; it does not
+    extract the website's internal pixels.
+  </p>
+</section>
+
+<section class="panel">
+  <h3>4. WHITE BACKGROUND REMOVER</h3>
+
+  <p class="small">
+    This tool removes white pixels from the uploaded image/layout.
+    It cannot directly read pixels inside a protected live website.
+  </p>
+
+  <label>White removal strength</label>
+  <input id="threshold" type="range" min="180" max="255"
+    value="238">
+
+  <div class="controls">
+    <button onclick="removeWhite()">Remove White Background</button>
+    <button onclick="downloadPNG()">Download Transparent PNG</button>
+  </div>
+
+  <canvas id="canvas"></canvas>
+</section>
+
+</main>
 
 <script>
-function openSite(n) {
-  let input = document.getElementById("url" + n);
-  let url = input.value.trim();
+const stage=document.getElementById("stage");
+const statusEl=document.getElementById("status");
+const crop=document.getElementById("cropBox");
+const resize=document.getElementById("resize");
+const video=document.getElementById("videoLayer");
+const layout=document.getElementById("layoutLayer");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
 
-  if (!url) {
-    alert("Website URL لکھیں");
-    return;
-  }
+let videoURL=null;
+let layoutURL=null;
+let transparentURL=null;
+let cropEnabled=false;
+let dragType=null;
+let dragStart=null;
 
-  if (!url.startsWith("http")) {
-    url = "https://" + url;
-  }
-
-  document.getElementById("site" + n).src = url;
+function say(message){
+  statusEl.textContent=message;
 }
 
-document.getElementById("videoFile").onchange = function() {
-  let file = this.files[0];
-  if (!file) return;
+function normalURL(value){
+  value=value.trim();
+  if(!value)return "";
+  if(!/^https?:\/\//i.test(value))value="https://"+value;
+  try{return new URL(value).href}catch(e){return ""}
+}
 
-  let video = document.getElementById("video");
-  video.src = URL.createObjectURL(file);
-  video.loop = document.getElementById("loop").checked;
-  video.play().catch(() => {});
-};
+function loadSite(n){
+  const input=document.getElementById("url"+n);
+  const url=normalURL(input.value);
 
-document.getElementById("loop").onchange = function() {
-  document.getElementById("video").loop = this.checked;
-};
-
-function removeBackground() {
-  let file = document.getElementById("imageFile").files[0];
-  if (!file) {
-    alert("پہلے تصویر اپلوڈ کریں");
+  if(!url){
+    say("Please enter a valid website URL.");
     return;
   }
 
-  let img = new Image();
-  img.onload = function() {
-    let canvas = document.getElementById("canvas");
-    let ctx = canvas.getContext("2d");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0);
+  input.value=url;
+  document.getElementById("web"+n).src=url;
+  showWebsite(n);
+  say("Website "+n+" requested. If blocked, the site may disallow embedding.");
+}
 
-    let data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    let pixels = data.data;
+function showWebsite(n){
+  document.querySelectorAll(".web").forEach(f=>{
+    f.style.display="none";
+    f.style.transform="none";
+    f.style.width="100%";
+    f.style.height="100%";
+    f.style.left="0";
+    f.style.top="0";
+  });
 
-    for (let i = 0; i < pixels.length; i += 4) {
-      if (pixels[i] > 235 &&
-          pixels[i + 1] > 235 &&
-          pixels[i + 2] > 235) {
-        pixels[i + 3] = 0;
+  document.getElementById("web"+n).style.display="block";
+  say("Showing website "+n+".");
+}
+
+function showAll(){
+  [1,2,3].forEach(n=>{
+    const f=document.getElementById("web"+n);
+    f.style.display="block";
+    f.style.width="50%";
+    f.style.height="50%";
+    f.style.left=((n-1)%2*50)+"%";
+    f.style.top=(Math.floor((n-1)/2)*50)+"%";
+  });
+  say("Showing all three websites.");
+}
+
+function hideSites(){
+  document.querySelectorAll(".web").forEach(f=>f.style.display="none");
+  say("Websites hidden.");
+}
+
+function reloadSites(){
+  let count=0;
+  [1,2,3].forEach(n=>{
+    const f=document.getElementById("web"+n);
+    if(f.src && f.src!=="about:blank"){
+      f.src=f.src;
+      count++;
+    }
+  });
+  say(count?"Reload requested.":"No websites loaded yet.");
+}
+
+function setMix(){
+  showWebsite(1);
+  if(video.src)video.style.display="block";
+  if(layout.src)layout.style.display="block";
+  say("Mix mode enabled.");
+}
+
+document.getElementById("videoFile").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+
+  if(videoURL)URL.revokeObjectURL(videoURL);
+  videoURL=URL.createObjectURL(file);
+  video.src=videoURL;
+  video.style.display="block";
+  video.play().catch(()=>{});
+  setMix();
+  say("Video loaded.");
+});
+
+document.getElementById("imageFile").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+
+  if(layoutURL)URL.revokeObjectURL(layoutURL);
+  layoutURL=URL.createObjectURL(file);
+  layout.src=layoutURL;
+  layout.style.display="block";
+  setMix();
+  say("Image/layout loaded.");
+});
+
+function showVideo(){
+  if(!video.src){say("Upload a video first.");return}
+  video.style.display="block";
+  video.play().catch(()=>{});
+}
+
+function hideVideo(){video.style.display="none"}
+
+function showLayout(){
+  if(!layout.src){say("Upload an image first.");return}
+  layout.style.display="block";
+}
+
+function hideLayout(){layout.style.display="none"}
+
+function enableCrop(){
+  cropEnabled=true;
+  crop.style.display="block";
+  say("Crop enabled. Drag the box or yellow corner.");
+}
+
+function disableCrop(){
+  cropEnabled=false;
+  crop.style.display="none";
+}
+
+function resetCrop(){
+  crop.style.left="25%";
+  crop.style.top="25%";
+  crop.style.width="50%";
+  crop.style.height="45%";
+  document.getElementById("zoom").value=1;
+  document.getElementById("zoomText").textContent="1.0x";
+  zoomContent(1);
+  say("Crop reset.");
+}
+
+function zoomContent(value){
+  const z=Number(value);
+  document.getElementById("zoomText").textContent=z.toFixed(1)+"x";
+
+  const active=[...document.querySelectorAll(".web")]
+    .find(f=>getComputedStyle(f).display!=="none");
+
+  if(active){
+    active.style.width=(100*z)+"%";
+    active.style.height=(100*z)+"%";
+    active.style.transformOrigin="top left";
+  }
+}
+
+function applyCrop(){
+  if(crop.style.display==="none"){
+    say("Enable crop first.");
+    return;
+  }
+
+  const rect=stage.getBoundingClientRect();
+  const x=crop.offsetLeft/rect.width;
+  const y=crop.offsetTop/rect.height;
+  const w=crop.offsetWidth/rect.width;
+  const h=crop.offsetHeight/rect.height;
+
+  const active=[...document.querySelectorAll(".web")]
+    .find(f=>getComputedStyle(f).display!=="none");
+
+  if(!active){
+    say("Load a website first.");
+    return;
+  }
+
+  active.style.width=(100/w)+"%";
+  active.style.height=(100/h)+"%";
+  active.style.left=(-x*100/w)+"%";
+  active.style.top=(-y*100/h)+"%";
+  active.style.transform="none";
+
+  crop.style.display="none";
+  cropEnabled=false;
+
+  say("Crop zoom applied. Exact cropping depends on the browser and website.");
+}
+
+function pointerDown(e,type){
+  if(!cropEnabled)return;
+  dragType=type;
+  dragStart={
+    x:e.clientX,y:e.clientY,
+    left:crop.offsetLeft,top:crop.offsetTop,
+    width:crop.offsetWidth,height:crop.offsetHeight
+  };
+  e.currentTarget.setPointerCapture(e.pointerId);
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+crop.addEventListener("pointerdown",e=>{
+  if(e.target===resize)return;
+  pointerDown(e,"move");
+});
+
+resize.addEventListener("pointerdown",e=>pointerDown(e,"resize"));
+
+document.addEventListener("pointermove",e=>{
+  if(!dragType||!dragStart)return;
+
+  const rect=stage.getBoundingClientRect();
+  const dx=e.clientX-dragStart.x;
+  const dy=e.clientY-dragStart.y;
+
+  if(dragType==="move"){
+    crop.style.left=Math.max(0,Math.min(
+      rect.width-crop.offsetWidth,dragStart.left+dx
+    ))+"px";
+    crop.style.top=Math.max(0,Math.min(
+      rect.height-crop.offsetHeight,dragStart.top+dy
+    ))+"px";
+  }else{
+    crop.style.width=Math.max(70,Math.min(
+      rect.width-dragStart.left,dragStart.width+dx
+    ))+"px";
+    crop.style.height=Math.max(45,Math.min(
+      rect.height-dragStart.top,dragStart.height+dy
+    ))+"px";
+  }
+});
+
+document.addEventListener("pointerup",()=>{
+  dragType=null;
+  dragStart=null;
+});
+
+function removeWhite(){
+  if(!layout.src){
+    say("Upload a scoreboard image or screenshot first.");
+    return;
+  }
+
+  const img=new Image();
+
+  img.onload=()=>{
+    canvas.width=img.naturalWidth;
+    canvas.height=img.naturalHeight;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img,0,0);
+
+    const data=ctx.getImageData(0,0,canvas.width,canvas.height);
+    const pixels=data.data;
+    const threshold=Number(document.getElementById("threshold").value);
+
+    for(let i=0;i<pixels.length;i+=4){
+      const r=pixels[i],g=pixels[i+1],b=pixels[i+2];
+      if(r>=threshold && g>=threshold && b>=threshold){
+        pixels[i+3]=0;
       }
     }
 
-    ctx.putImageData(data, 0, 0);
+    ctx.putImageData(data,0,0);
+
+    canvas.toBlob(blob=>{
+      if(!blob){say("Could not create PNG.");return}
+      if(transparentURL)URL.revokeObjectURL(transparentURL);
+      transparentURL=URL.createObjectURL(blob);
+      layout.src=transparentURL;
+      layout.style.display="block";
+      say("White pixels removed. White text may also become transparent.");
+    },"image/png");
   };
 
-  img.src = URL.createObjectURL(file);
+  img.onerror=()=>say("Could not read this image. Try another file.");
+  img.src=layout.src;
 }
 
-function downloadPNG() {
-  let canvas = document.getElementById("canvas");
-  if (!canvas.width) {
-    alert("پہلے تصویر کا بیک گراؤنڈ ریموو کریں");
+function downloadPNG(){
+  if(!transparentURL){
+    say("Run Remove White Background first.");
     return;
   }
 
-  let a = document.createElement("a");
-  a.download = "rizwan-transparent.png";
-  a.href = canvas.toDataURL("image/png");
+  const a=document.createElement("a");
+  a.href=transparentURL;
+  a.download="rizwan-transparent-scoreboard.png";
   a.click();
 }
-</script>
 
+function fullScreen(){
+  if(stage.requestFullscreen){
+    stage.requestFullscreen().catch(()=>say("Fullscreen unavailable."));
+  }
+}
+
+function resetAll(){
+  document.querySelectorAll(".web").forEach(f=>{
+    f.style.display="none";
+    f.style.width="100%";
+    f.style.height="100%";
+    f.style.left="0";
+    f.style.top="0";
+    f.style.transform="none";
+  });
+  video.style.display="none";
+  layout.style.display="none";
+  crop.style.display="none";
+  resetCrop();
+  say("Screen reset.");
+}
+</script>
 </body>
 </html>
