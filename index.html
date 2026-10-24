@@ -2,109 +2,114 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>PAK LIVE OVERLAY - SERIES + SCORE</title>
+<title>All Live Matches + Same Design Overlay</title>
 <style>
-body{margin:0;font-family:Arial Black;background:#0a1929;color:#fff}
-#selector{padding:20px;max-width:650px;margin:auto}
-h2{text-align:center;color:#ffeb3b}
-.match{background:#fff;color:#000;border-radius:12px;padding:14px;margin:12px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.match:hover{background:#ffeb3b;transform:scale(1.02)}
-.match b{font-size:16px} .match span{font-size:11px;background:#0d47a1;color:#fff;padding:5px 10px;border-radius:20px}
-#overlayMode{display:none;width:1920px;height:1080px;position:relative}
-.series{position:absolute;top:520px;left:50%;transform:translateX(-50%);width:1100px;background:#000;color:#ffeb3b;text-align:center;padding:6px;font-size:15px;font-weight:900;border-radius:10px 10px 0 0;border:3px solid #fff;border-bottom:none}
-.wrap{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:1100px}
-.top{display:flex;height:78px;border:3px solid #fff;border-radius:0 0 14px 14px;overflow:hidden}
-.left{flex:1.4;background:linear-gradient(90deg,#1565c0,#1e88e5);display:flex;align-items:center;padding:0 15px;color:#fff}
-.right{flex:1.4;background:linear-gradient(90deg,#2e7d32,#43a047);display:flex;align-items:center;justify-content:flex-end;padding:0 15px;color:#fff}
-.mid{width:220px;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-left:4px solid #fff;border-right:4px solid #fff}
-.team-name{font-size:18px;font-weight:900}
-.big-score{font-size:42px;font-weight:900}
-.over-badge{background:#ffeb3b;color:#000;font-size:20px;padding:2px 7px;border-radius:6px;margin-left:8px;font-weight:900}
-.flag{width:60px;height:60px;border-radius:50%;border:3px solid #fff;background:#fff;object-fit:cover}
-.mid-flag{width:48px;height:48px;border-radius:50%;border:2px solid #fff}
-.circle{width:56px;height:56px;background:radial-gradient(circle,#ffeb3b,#ff9800);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#000;border:3px solid #fff}
-.bar2{display:flex;height:32px;font-weight:900;font-size:14px;margin-top:5px}
-.crr{flex:1;background:#0d47a1;color:#fff;display:flex;align-items:center;padding-left:14px;border-radius:0 0 0 10px}
-.need{flex:1;background:#ffeb3b;color:#000;display:flex;align-items:center;justify-content:center;border-radius:0 0 10px 0}
-.bar3{display:flex;gap:5px;margin-top:5px;height:28px;font-weight:900;font-size:13px}
-.pship{background:#e91e8c;color:#fff;padding:0 14px;border-radius:8px;display:flex;align-items:center}
-.probs{flex:1;display:flex;gap:5px}.probs div{flex:1;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff}
-.pakp{background:#212121} .slp{background:#1565c0}
-.players{display:flex;gap:5px;margin-top:5px;height:102px}
-.card{flex:1;background:#fff;border-radius:10px;border:3px solid #fff;overflow:hidden;display:flex}
-.card-body{flex:1;padding:3px 8px;display:flex;flex-direction:column}
-.badge{font-size:11px;background:#0d47a1;color:#fff;padding:2px 10px;border-radius:20px;align-self:flex-start}
-.pname{font-size:13px;font-weight:900;color:#0d47a1;text-align:center;margin-top:4px}
-.pscore{font-size:28px;font-weight:900;text-align:center}
-.stats{background:#ffeb3b;font-size:10px;font-weight:900;display:flex;justify-content:space-around;padding:3px 0;margin-top:auto;border-radius:4px;color:#000}
-.recent{display:flex;height:32px;background:#0f1419;border:3px solid #fff;border-radius:10px;margin-top:5px;align-items:center;padding:0 12px;gap:6px}
-.rlabel{color:#00ff88;font-weight:900}
-.b{width:26px;height:26px;border-radius:50%;background:#fff;color:#000;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:12px}
+body{margin:0;background:#0a1929;color:#fff;font-family:Arial Black}
+#listPage{max-width:700px;margin:auto;padding:15px}
+.header{text-align:center;color:#ffeb3b;padding:15px}
+.match{background:#fff;color:#000;border-radius:12px;padding:12px;margin:10px 0;cursor:pointer;display:flex;justify-content:space-between}
+.match:hover{background:#ffeb3b}
+#overlay{display:none;width:1920px;height:1080px;background:#000;position:relative;overflow:hidden}
+
+/* SAME AS YOUR SCREENSHOT */
+.topBar{display:flex;height:95px;position:absolute;top:0;width:100%}
+.sl{flex:1.2;background:linear-gradient(90deg,#0d47a1,#1976d2);display:flex;align-items:center;padding:0 10px;clip-path:polygon(0 0, 90% 0, 85% 100%, 0 100%)}
+.pk{flex:1.2;background:linear-gradient(90deg,#2e7d32,#388e3c);display:flex;align-items:center;justify-content:flex-end;padding:0 10px;clip-path:polygon(15% 0, 100% 0, 100% 100%, 10% 100%)}
+.mid{width:320px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 10px}
+.flag{width:85px;height:85px;border-radius:50%;border:4px solid #ffeb3b;object-fit:cover}
+.team{font-size:16px;color:#fff;line-height:12px}
+.scoreBig{font-size:54px;font-weight:900;line-height:50px}
+.overs{font-size:28px;color:#ffeb3b}
+.circle{width:68px;height:68px;background:radial-gradient(#ffeb3b,#ff9800);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;font-size:44px;border:3px solid #fff}
+.crrBar{position:absolute;top:95px;width:100%;display:flex;height:28px}
+.crr{flex:1;background:#0d47a1;color:#fff;display:flex;align-items:center;padding-left:10px;font-size:14px}
+.need{flex:1;background:#2e7d32;color:#ffeb3b;display:flex;align-items:center;justify-content:center;font-size:14px}
+.pBar{position:absolute;top:124px;width:100%;display:flex;gap:5px;height:28px;padding:0 5px}
+.pship{background:#7c4dff;color:#fff;padding:0 12px;border-radius:6px;display:flex;align-items:center;font-size:13px}
+.win{flex:1;display:flex;gap:5px}
+.win div{flex:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.players{position:absolute;bottom:38px;width:100%;display:flex;gap:4px;padding:0 4px;height:110px}
+.card{flex:1;background:#fff;border-radius:8px;display:flex;overflow:hidden;border:2px solid #fff}
+.card img{width:85px;object-fit:cover}
+.cardBody{flex:1;padding:2px 6px}
+.badge{font-size:10px;background:#0d47a1;color:#fff;padding:2px 8px;border-radius:10px}
+.pname{color:#0d47a1;font-size:13px;text-align:center;font-weight:900}
+.pscore{font-size:32px;font-weight:900;color:#000;text-align:center}
+.stats{background:#ffeb3b;color:#000;font-size:10px;display:flex;justify-content:space-around;padding:2px 0}
+.recent{position:absolute;bottom:0;width:100%;height:36px;background:#0d1b2a;border-top:3px solid #fff;display:flex;align-items:center;padding:0 10px;gap:6px}
+.rBall{width:28px;height:28px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}
 </style>
 </head>
 <body>
-<div id="selector">
-<h2>🏏 LIVE SERIES + SCORE</h2>
-<div id="list">Cricbuzz سے Live Matches لوڈ ہو رہے ہیں...</div>
+
+<div id="listPage">
+<div class="header"><h2>🏏 ALL LIVE MATCHES</h2><p style="font-family:Arial;font-size:12px">Cricbuzz سے Direct - جس پر کلک کرو وہی اس ڈیزائن میں کھلے گا</p></div>
+<div id="matches">⏳ Loading Live Matches from Cricbuzz...</div>
 </div>
-<div id="overlayMode">
-<div class="series" id="seriesName">Loading Series...</div>
-<div class="wrap">
-<div class="top">
-<div class="left"><div><div class="team-name" id="t1n">PAKISTAN</div><div style="display:flex;align-items:center"><span class="big-score" id="t1s">0-0</span><span class="over-badge" id="t1o">0.0</span></div></div><img class="flag" id="t1f" src="https://flagcdn.com/w80/pk.png" style="margin-left:12px"></div>
-<div class="mid"><img class="mid-flag" id="mf1" src="https://flagcdn.com/w80/pk.png"><div class="circle" id="ballsLeft">0</div><img class="mid-flag" id="mf2" src="https://flagcdn.com/w80/gb-eng.png"></div>
-<div class="right"><img class="flag" id="t2f" src="https://flagcdn.com/w80/gb-eng.png" style="margin-right:12px"><div style="text-align:right"><div class="team-name" id="t2n">ENGLAND</div><div class="big-score" id="t2s">0-0</div></div></div>
+
+<div id="overlay">
+<div class="topBar">
+<div class="sl"><div><div class="team" id="t1">SRI LANKA</div><div><span class="scoreBig" id="s1">253-5</span> <span class="overs" id="o1">43.3</span></div></div><img class="flag" id="f1" src="https://flagcdn.com/w80/lk.png"></div>
+<div class="mid"><img class="flag" id="mf1" src="https://flagcdn.com/w80/lk.png"><div class="circle" id="balls">0</div><img class="flag" id="mf2" src="https://flagcdn.com/w80/pk.png"></div>
+<div class="pk"><img class="flag" id="f2" src="https://flagcdn.com/w80/pk.png"><div style="text-align:right"><div class="team">PAKISTN</div><div class="scoreBig" id="s2">305/10</div></div></div>
 </div>
-<div class="bar2"><div class="crr" id="crr">CRR : 0.00</div><div class="need" id="need">Fetching Live...</div></div>
-<div class="bar3"><div class="pship" id="pship">P'SHIP: 0(0)</div><div class="probs"><div class="pakp" id="prob1">LIVE</div><div class="slp" id="prob2">AUTO</div></div></div>
+<div class="crrBar"><div class="crr" id="crr">CRR : 5.82 RRR : 8.15</div><div class="need" id="need">SL NEED 53 RUNS IN 39 BALLS</div></div>
+<div class="pBar"><div class="pship" id="pship">P'SHIP: 43(37)</div><div class="win"><div style="background:#212121" id="w1">PAK: 45%</div><div style="background:#0d47a1" id="w2">SL: 55%</div></div></div>
 <div class="players">
-<div class="card"><div class="card-body"><span class="badge">BATSMAN</span><div class="pname" id="b1n">Loading...</div><div class="pscore" id="b1s">0</div><div class="stats"><span>4S:0</span><span>SR:0</span></div></div></div>
-<div class="card"><div class="card-body"><span class="badge">BATSMAN</span><div class="pname" id="b2n">Loading...</div><div class="pscore" id="b2s">0</div><div class="stats"><span>4S:0</span><span>SR:0</span></div></div></div>
-<div class="card"><div class="card-body"><span class="badge">BOWLER</span><div class="pname" id="bwn">Loading...</div><div class="pscore" id="bws">0-0</div><div class="stats"><span>ECON:0</span></div></div></div>
+<div class="card"><img id="b1img" src="https://via.placeholder.com/85"><div class="cardBody"><span class="badge">BATSMAN</span><div class="pname" id="b1n">J LIYANAGE</div><div class="pscore" id="b1s">60 (71)</div><div class="stats"><span id="b1s1">4S:5</span><span id="b1s2">SR:84.51</span></div></div></div>
+<div class="card"><img id="b2img" src="https://via.placeholder.com/85"><div class="cardBody"><span class="badge">BATSMAN</span><div class="pname" id="b2n">D SHANAKA</div><div class="pscore" id="b2s">26 (16)</div><div class="stats"><span>4S:3</span><span>SR:162.50</span></div></div></div>
+<div class="card"><img id="b3img" src="https://via.placeholder.com/85"><div class="cardBody"><span class="badge" style="background:#2e7d32">BOWLER</span><div class="pname" id="b3n">H RAUF</div><div class="pscore" id="b3s">0-45 (7.3)</div><div class="stats"><span>ECON:6.00</span></div></div></div>
 </div>
-<div class="recent"><span class="rlabel">RECENT</span><div style="display:flex;gap:6px" id="recent"></div></div>
+<div class="recent"><span style="color:#00ff88">RECENT</span><div style="display:flex;gap:5px" id="recentBalls"></div><span style="margin-left:auto;font-size:11px" id="ovInfo">OV 44: 0 2 0</span></div>
+<button onclick="location.href=location.pathname" style="position:absolute;top:5px;left:5px;background:#ffeb3b;border:none;padding:6px 12px;border-radius:6px;font-weight:900">← LIST</button>
 </div>
-<button onclick="location.href=location.pathname" style="position:absolute;top:10px;left:10px;padding:8px 14px;border-radius:8px;border:none;background:#ffeb3b;font-weight:900">← Back</button>
-</div>
+
 <script>
-const flagMap={"Pakistan":"pk","India":"in","England":"gb-eng","Sri Lanka":"lk","Australia":"au","New Zealand":"nz","South Africa":"za","Bangladesh":"bd","West Indies":"jm","Afghanistan":"af"};
-function flagUrl(c){return `https://flagcdn.com/w80/${flagMap[c]||"pk"}.png`;}
-const params=new URLSearchParams(location.search);const matchId=params.get('matchId');
-if(matchId){
-document.getElementById('selector').style.display='none';document.getElementById('overlayMode').style.display='block';
-fetchRealScore(matchId);setInterval(()=>fetchRealScore(matchId),5000);
-}else{fetchLiveMatches();}
-async function fetchLiveMatches(){
-const list=document.getElementById('list');
-try{
-let proxy="https://api.allorigins.win/raw?url=";
-let api="https://www.cricbuzz.com/api/cricket/matches/v1/recent";
-let r=await fetch(proxy+encodeURIComponent(api));
-let j=await r.json();let matches=[];
-j.typeMatches.forEach(tm=>{(tm.seriesMatches||[]).forEach(sm=>{if(sm.seriesAdWrapper) matches.push(...sm.seriesAdWrapper.matches);});});
-list.innerHTML="";matches.slice(0,25).forEach(m=>{
-let id=m.matchInfo.matchId;let t1=m.matchInfo.team1.teamName;let t2=m.matchInfo.team2.teamName;let series=m.matchInfo.seriesName;let status=m.matchInfo.status;
-let div=document.createElement('div');div.className='match';
-div.innerHTML=`<div><b>${t1} vs ${t2}</b><br><small style="font-size:11px">${series} - ${status}</small></div><span>CLICK →</span>`;
-div.onclick=()=>location.href="?matchId="+id;list.appendChild(div);
-});
-}catch(e){
-list.innerHTML=`<div class="match" onclick="location.href='?matchId=89654'"><div><b>Pakistan vs England</b><br><small>PAKISTAN TOUR OF ENGLAND 2025 - DEMO</small></div><span>LIVE</span></div>`;
+const p=new URLSearchParams(location.search);const mid=p.get('matchId');
+if(mid){
+ document.getElementById('listPage').style.display='none';
+ document.getElementById('overlay').style.display='block';
+ loadScore(mid);setInterval(()=>loadScore(mid),5000);
+}else{loadList();}
+
+async function loadList(){
+ let el=document.getElementById('matches');
+ let proxies=["https://corsproxy.io/?","https://api.allorigins.win/raw?url="];
+ for(let proxy of proxies){
+  try{
+   let r=await fetch(proxy+encodeURIComponent("https://www.cricbuzz.com/api/cricket/matches/v1/recent"));
+   let j=await r.json();let arr=[];
+   j.typeMatches.forEach(tm=>tm.seriesMatches.forEach(sm=>{if(sm.seriesAdWrapper)arr.push(...sm.seriesAdWrapper.matches)}));
+   el.innerHTML="";
+   arr.forEach(m=>{
+     let id=m.matchInfo.matchId;let t1=m.matchInfo.team1.teamName;let t2=m.matchInfo.team2.teamName;
+     let d=document.createElement('div');d.className='match';
+     d.innerHTML=`<div><b>${t1} vs ${t2}</b><br><small>${m.matchInfo.seriesName} - ${m.matchInfo.status}</small></div><span style="background:#d32f2f;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px">${m.matchInfo.state=='In Progress'?'LIVE':'VIEW'}</span>`;
+     d.onclick=()=>location.href='?matchId='+id;el.appendChild(d);
+   });
+   return;
+  }catch(e){}
+ }
+ el.innerHTML=`<div class="match" style="background:#ffeb3b" onclick="location.href='?matchId=89654'"><b>SRI LANKA vs PAKISTAN (Screenshot Wala)</b><br><small>Click to see Same Design</small></div>`;
 }
-}
-async function fetchRealScore(id){
-try{
-if(id=="89654"){let r=253+Math.floor(Math.random()*6);let o=(43.3+Math.random()).toFixed(1);document.getElementById('t1s').innerText=r+"-5";document.getElementById('t1o').innerText=o;document.getElementById('seriesName').innerText="PAKISTAN TOUR OF ENGLAND 2025 - 3rd ODI";document.getElementById('need').innerText=`NEED ${306-r} RUNS IN 39 BALLS`;return;}
-let proxy="https://api.allorigins.win/raw?url=";
-let api=`https://www.cricbuzz.com/api/cricket/match/${id}/comm`;
-let r=await fetch(proxy+encodeURIComponent(api));let data=await r.json();
-let info=data.matchHeader||{};let mini=data.miniscore||{};
-document.getElementById('seriesName').innerText=(info.seriesName||"LIVE SERIES")+" - "+(info.matchDescription||"");
-document.getElementById('t1n').innerText=mini.batTeam?.teamName||"BAT";document.getElementById('t1s').innerText=mini.batTeamScore||"";document.getElementById('t1o').innerText=mini.overs||"";
-document.getElementById('t2n').innerText=mini.bowlTeam?.teamName||"BOWL";document.getElementById('crr').innerText=`CRR: ${mini.currentRunRate||0}`;document.getElementById('need').innerText=mini.status||"LIVE";
-document.getElementById('b1n').innerText=mini.batsmanStriker? `${mini.batsmanStriker.batName} ${mini.batsmanStriker.batRuns}(${mini.batsmanStriker.batBalls})`:"";
-document.getElementById('b2n').innerText=mini.batsmanNonStriker? `${mini.batsmanNonStriker.batName} ${mini.batsmanNonStriker.batRuns}(${mini.batsmanNonStriker.batBalls})`:"";
-}catch(e){console.log(e);}
+
+async function loadScore(id){
+ try{
+  if(id=='89654'){
+    // Screenshot wala demo data
+    document.getElementById('s1').innerText='253-5';document.getElementById('o1').innerText='43.3';document.getElementById('s2').innerText='305/10';
+    document.getElementById('recentBalls').innerHTML='<span class="rBall">0</span><span class="rBall">0</span><span class="rBall">1</span><span class="rBall">1</span><span class="rBall">1</span><span class="rBall">0</span><span class="rBall" style="background:#1565c0;color:#fff">3</span>';
+    return;
+  }
+  let r=await fetch("https://corsproxy.io/?"+encodeURIComponent(`https://www.cricbuzz.com/api/cricket/match/${id}/comm`));
+  let d=await r.json();let m=d.miniscore;
+  document.getElementById('t1').innerText=m.batTeam.teamName;document.getElementById('s1').innerText=m.batTeamScore;
+  document.getElementById('o1').innerText=m.overs;document.getElementById('s2').innerText=m.oppTeamScore||'';
+  document.getElementById('crr').innerText=`CRR : ${m.currentRunRate} RRR : ${m.requiredRunRate}`;
+  document.getElementById('need').innerText=m.status;
+  document.getElementById('b1n').innerText=m.batsmanStriker.batName;document.getElementById('b1s').innerText=`${m.batsmanStriker.batRuns} (${m.batsmanStriker.batBalls})`;
+  document.getElementById('b2n').innerText=m.batsmanNonStriker.batName;document.getElementById('b2s').innerText=`${m.batsmanNonStriker.batRuns} (${m.batsmanNonStriker.batBalls})`;
+ }catch(e){}
 }
 </script>
 </body>
