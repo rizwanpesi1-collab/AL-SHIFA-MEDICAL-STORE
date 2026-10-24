@@ -1,99 +1,388 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>All Live Matches - Fixed List</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a1929">
+<title>Rizwan Cricket Overlay</title>
+
 <style>
-body{margin:0;background:#0a1929;color:#fff;font-family:Arial Black}
+*{box-sizing:border-box}
+body{margin:0;background:#0a1929;color:#fff;font-family:Arial,sans-serif}
 #listPage{max-width:700px;margin:auto;padding:15px}
-.header{text-align:center;color:#ffeb3b;padding:15px}
-.match{background:#fff;color:#000;border-radius:12px;padding:14px;margin:12px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.match:hover{background:#ffeb3b;transform:scale(1.02)}
-.badge{padding:5px 12px;border-radius:20px;color:#fff;font-size:11px}
-.live{background:#d32f2f} .up{background:#0d47a1}
-#overlay{display:none;width:1920px;height:1080px;background:#000;position:relative}
+.header{text-align:center;color:#ffeb3b;padding:15px 0}
+#status{font-size:12px;color:#ddd;line-height:1.5}
+.toolbar{display:flex;gap:8px;margin:12px 0}
+button,select{padding:11px;border:0;border-radius:8px;font-weight:bold}
+button{cursor:pointer;background:#ffeb3b}
+select{flex:1;min-width:0}
+.match{background:#fff;color:#000;border-radius:12px;padding:14px;margin:12px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.match:hover{background:#ffeb3b}
+.match small{display:block;margin-top:6px;font-size:12px;line-height:1.5}
+.badge{color:#fff;border-radius:20px;padding:6px 9px;font-size:10px;white-space:nowrap}
+.live{background:#d32f2f}
+.up{background:#0d47a1}
+.done{background:#455a64}
+.actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.copyBtn{background:#102b46;color:#fff;font-size:10px;padding:8px}
+#empty{text-align:center;padding:20px;color:#ddd}
+#overlay{display:none;position:fixed;inset:0;overflow:hidden;background:#000}
+#canvas{width:1920px;height:1080px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.5);background:#000}
+#back{position:absolute;z-index:5;top:12px;left:12px}
+.overlayTitle{position:absolute;top:100px;width:100%;text-align:center;font-size:45px;color:#ffeb3b;font-weight:900}
+.scorePanel{position:absolute;left:180px;right:180px;top:300px;padding:40px;border:4px solid #ffeb3b;border-radius:20px;background:#071626;text-align:center}
+.teams{font-size:42px;font-weight:900}
+.score{color:#ffeb3b;font-size:80px;font-weight:900;margin:25px 0}
+.detail{font-size:28px;line-height:1.5}
+.meta{margin-top:18px;font-size:20px;color:#ddd}
+#error{font-size:20px;margin-top:15px}
+@media(max-width:500px){
+#listPage{padding:10px}
+.match{padding:10px}
+.match small{font-size:11px}
+.badge{font-size:9px;padding:5px}
+.copyBtn{font-size:9px;padding:7px}
+}
 </style>
 </head>
 <body>
+
 <div id="listPage">
-<div class="header">
-<h2>🏏 ALL LIVE MATCHES - TRI-SERIES 2026</h2>
-<p style="font-family:Arial;font-size:11px" id="status">Connecting to Cricbuzz...</p>
-</div>
-<div id="matches"></div>
+  <div class="header">
+    <h2>🏏 ALL LIVE MATCHES</h2>
+    <p id="status">Connecting to cricket service...</p>
+  </div>
+
+  <div class="toolbar">
+    <select id="category">
+      <option value="all">All Matches</option>
+      <option value="international">International</option>
+      <option value="league">League</option>
+      <option value="domestic">Domestic</option>
+      <option value="women">Women</option>
+    </select>
+    <button id="refreshBtn">↻ Refresh</button>
+  </div>
+
+  <div id="matches"></div>
+  <div id="empty" hidden>No matches found. Try again later.</div>
 </div>
 
 <div id="overlay">
-<h1 style="text-align:center;color:#ffeb3b;padding-top:200px" id="overlayText">Loading...</h1>
-<button onclick="location.href=location.pathname" style="position:absolute;top:10px;left:10px;background:#ffeb3b;border:none;padding:10px 16px;border-radius:8px;font-weight:900">← BACK TO LIST</button>
+  <button id="back">← BACK TO LIST</button>
+
+  <div id="canvas">
+    <div class="overlayTitle" id="overlayTitle">LIVE CRICKET</div>
+
+    <div class="scorePanel">
+      <div class="teams" id="teams">Loading match...</div>
+      <div class="score" id="score">--/--</div>
+      <div class="detail" id="detail">Loading score...</div>
+      <div class="meta" id="meta"></div>
+      <div id="error"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-const params=new URLSearchParams(location.search);
-const mid=params.get('matchId');
-if(mid){
- document.getElementById('listPage').style.display='none';
- document.getElementById('overlay').style.display='block';
- document.getElementById('overlayText').innerText='Match ID: '+mid+' - Live Score Loading from Cricbuzz...';
-}else{loadListFixed();}
+"use strict";
 
-async function loadListFixed(){
- let el=document.getElementById('matches');
- let status=document.getElementById('status');
- 
- // STEP 1: فوراً Hardcoded لسٹ دکھا دو تاکہ خالی نہ لگے
- el.innerHTML=`
-   <div class="match" onclick="location.href='?matchId=114987'" style="background:#ffeb3b;border:3px solid #d32f2f">
-     <div><b>Pakistan vs England - 4th ODI - TODAY 1:00 PM</b><br><small style="font-family:Arial">Gaddafi Stadium, Lahore - Pakistan ODI Tri-Series 2026 - CLICK TO LOAD OVERLAY</small></div>
-     <span class="badge live">● LIVE TODAY</span>
-   </div>
-   <div class="match" onclick="location.href='?matchId=114985'">
-     <div><b>Pakistan vs Sri Lanka - 1st ODI</b><br><small style="font-family:Arial">Rawalpindi - Tri-Series 2026</small></div>
-     <span class="badge up">RECENT</span>
-   </div>
-   <div class="match" onclick="location.href='?matchId=114986'">
-     <div><b>Sri Lanka vs England - 3rd ODI</b><br><small style="font-family:Arial">Rawalpindi - 429/4 vs 430/8 - SL Won</small></div>
-     <span class="badge up">RESULT</span>
-   </div>
-   <div class="match" onclick="location.href='?matchId=89654'">
-     <div><b>Sri Lanka vs Pakistan - Your Screenshot Design</b><br><small style="font-family:Arial">253-5 (43.3) - Demo Overlay</small></div>
-     <span class="badge live">DEMO</span>
-   </div>
- `;
- status.innerText='Showing Tri-Series Matches (Hardcoded) - Now trying to fetch live from Cricbuzz...';
+const API = "https://cricbuzz-live.vercel.app";
+const params = new URLSearchParams(location.search);
+const matchId = params.get("matchId");
 
- // STEP 2: اب Cricbuzz سے Real List لانے کی کوشش کرو - اگر آ گئی تو اس لسٹ کو Replace کر دو
- let proxies=[
-   "https://corsproxy.io/?",
-   "https://api.allorigins.win/raw?url=",
-   "https://api.codetabs.com/v1/proxy?quest=",
-   "https://thingproxy.freeboard.name/fetch/"
- ];
- 
- for(let proxy of proxies){
+let lastScore = null;
+
+const $ = id => document.getElementById(id);
+
+async function getJSON(url){
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+
   try{
-   status.innerText='Trying Proxy: '+proxy+' ...';
-   let r=await fetch(proxy+encodeURIComponent("https://www.cricbuzz.com/api/cricket/matches/v1/recent"),{cache:'no-store'});
-   if(!r.ok) continue;
-   let j=await r.json();
-   let arr=[];
-   j.typeMatches.forEach(tm=>tm.seriesMatches.forEach(sm=>{if(sm.seriesAdWrapper)arr.push(...sm.seriesAdWrapper.matches)}));
-   if(arr.length>0){
-     status.innerText='Live from Cricbuzz - '+arr.length+' Matches Found!';
-     el.innerHTML=''; // Hardcoded ہٹا دو
-     arr.slice(0,20).forEach(m=>{
-       let id=m.matchInfo.matchId;let t1=m.matchInfo.team1.teamName;let t2=m.matchInfo.team2.teamName;
-       let d=document.createElement('div');d.className='match';
-       let isLive=m.matchInfo.state=='In Progress';
-       d.innerHTML=`<div><b>${t1} vs ${t2}</b><br><small style="font-family:Arial">${m.matchInfo.seriesName} - ${m.matchInfo.status}</small></div><span class="badge ${isLive?'live':'up'}">${isLive?'● LIVE':'VIEW'}</span>`;
-       d.onclick=()=>location.href='?matchId='+id;
-       el.appendChild(d);
-     });
-     return;
-   }
-  }catch(e){ console.log(e); }
- }
- status.innerText='Cricbuzz API Blocked on GitHub - Showing Hardcoded Tri-Series List (Click any)';
+    const response = await fetch(url,{
+      cache:"no-store",
+      signal:controller.signal
+    });
+
+    if(!response.ok) throw new Error("HTTP " + response.status);
+
+    return await response.json();
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+function getId(m){
+  return m.id ?? m.matchId ?? m.matchInfo?.matchId;
+}
+
+function getTitle(m){
+  if(m.title) return m.title;
+
+  const info=m.matchInfo || {};
+
+  return (info.team1?.teamName || "Team 1") +
+    " vs " +
+    (info.team2?.teamName || "Team 2");
+}
+
+function getMatches(data){
+  if(Array.isArray(data?.matches)) return data.matches;
+  if(Array.isArray(data?.data?.matches)) return data.data.matches;
+
+  const out=[];
+
+  for(const type of data?.typeMatches || []){
+    for(const series of type.seriesMatches || []){
+      for(const item of series.seriesAdWrapper?.matches || []){
+        const info=item.matchInfo || {};
+
+        out.push({
+          id:info.matchId,
+          title:(info.team1?.teamName || "Team 1")+
+            " vs "+(info.team2?.teamName || "Team 2"),
+          state:info.state || "",
+          status:info.status || "",
+          seriesName:info.seriesName || ""
+        });
+      }
+    }
+  }
+
+  return out;
+}
+
+function getBadge(m){
+  const s=String(m.state || m.status || "").toLowerCase();
+
+  if(s.includes("progress") || s.includes("live") ||
+     s.includes("innings break")){
+    return ["● LIVE","live"];
+  }
+
+  if(s.includes("won by") || s.includes("complete") ||
+     s.includes("drawn") || s.includes("abandon")){
+    return ["RESULT","done"];
+  }
+
+  return ["VIEW","up"];
+}
+
+function makeLink(id){
+  const url=new URL(location.href);
+  url.search="";
+  url.searchParams.set("matchId",id);
+  return url.href;
+}
+
+async function copyLink(link){
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(link);
+    }else{
+      const box=document.createElement("textarea");
+      box.value=link;
+      box.style.position="fixed";
+      box.style.opacity="0";
+      document.body.appendChild(box);
+      box.select();
+
+      if(!document.execCommand("copy")){
+        throw new Error("Copy unavailable");
+      }
+
+      box.remove();
+    }
+
+    alert("Overlay link copied!");
+  }catch(e){
+    prompt("Copy overlay link:",link);
+  }
+}
+
+async function loadMatches(){
+  $("status").textContent="Loading matches...";
+  $("matches").replaceChildren();
+  $("empty").hidden=true;
+
+  const category=$("category").value;
+  const categories=category==="all"
+    ? ["international","league","domestic","women"]
+    : [category];
+
+  const requests=[];
+
+  for(const cat of categories){
+    for(const type of ["live","recent","upcoming"]){
+      requests.push(
+        getJSON(API+"/v1/matches/"+type+"?type="+
+          encodeURIComponent(cat))
+      );
+    }
+  }
+
+  const results=await Promise.allSettled(requests);
+  let success=0;
+  const all=[];
+
+  for(const result of results){
+    if(result.status==="fulfilled"){
+      success++;
+      all.push(...getMatches(result.value));
+    }
+  }
+
+  if(!success){
+    $("status").textContent=
+      "Cricket service unavailable. Check internet and retry.";
+    $("empty").hidden=false;
+    return;
+  }
+
+  const seen=new Set();
+  const matches=all.filter(m=>{
+    const id=getId(m);
+    if(id==null || seen.has(String(id))) return false;
+    seen.add(String(id));
+    return true;
+  });
+
+  for(const m of matches){
+    const id=getId(m);
+    const badge=getBadge(m);
+    const card=document.createElement("div");
+
+    card.className="match";
+    card.innerHTML=`
+      <div>
+        <b>${esc(getTitle(m))}</b>
+        <small>${esc(m.seriesName || "")}
+        ${esc(m.status || m.state || "")}</small>
+      </div>
+      <div class="actions">
+        <span class="badge ${badge[1]}">${badge[0]}</span>
+        <button class="copyBtn" type="button">COPY OVERLAY LINK</button>
+      </div>`;
+
+    card.addEventListener("click",()=>{
+      location.href=makeLink(id);
+    });
+
+    card.querySelector(".copyBtn").addEventListener("click",e=>{
+      e.stopPropagation();
+      copyLink(makeLink(id));
+    });
+
+    $("matches").appendChild(card);
+  }
+
+  $("empty").hidden=matches.length>0;
+  $("status").textContent=
+    "Updated "+new Date().toLocaleTimeString()+
+    " · "+matches.length+" matches";
+}
+
+function readScore(data){
+  const d=data?.data || data?.match || data || {};
+  const mini=d.miniscore || d.miniScore || d;
+  const header=d.matchHeader || d.header || {};
+
+  let score=d.liveScore || mini.liveScore || "";
+
+  if(!score && mini.batTeam){
+    score=(mini.batTeam.teamScore ?? 0)+"/"+
+      (mini.batTeam.teamWkts ?? 0)+
+      " ("+(mini.overs ?? "")+" ov)";
+  }
+
+  if(!score) score=d.score || d.currentScore || "Score unavailable";
+
+  return {
+    title:d.title || header.matchDescription || "LIVE CRICKET",
+    teams:[header.team1?.name,header.team2?.name]
+      .filter(Boolean).join(" vs "),
+    score:score,
+    detail:d.update || mini.status || d.status ||
+      d.overview || "Waiting for score update...",
+    meta:[
+      mini.currentRunRate!=null
+        ? "CRR "+mini.currentRunRate : "",
+      d.venue || header.venueName || ""
+    ].filter(Boolean).join(" · ")
+  };
+}
+
+function fitCanvas(){
+  const scale=Math.min(
+    innerWidth/1920,
+    innerHeight/1080
+  );
+
+  $("canvas").style.transform=
+    "translate(-50%,-50%) scale("+scale+")";
+}
+
+async function refreshScore(){
+  $("error").textContent="";
+
+  try{
+    const data=await getJSON(
+      API+"/v1/score/"+encodeURIComponent(matchId)
+    );
+
+    lastScore=readScore(data);
+
+    $("overlayTitle").textContent=lastScore.title;
+    $("teams").textContent=lastScore.teams || "MATCH SCORE";
+    $("score").textContent=lastScore.score;
+    $("detail").textContent=lastScore.detail;
+    $("meta").textContent="Updated "+
+      new Date().toLocaleTimeString()+
+      (lastScore.meta ? " · "+lastScore.meta : "");
+
+  }catch(e){
+    $("error").textContent=lastScore
+      ? "Connection lost. Showing last available score."
+      : "Score unavailable. Check the API or match ID.";
+
+    if(lastScore){
+      $("overlayTitle").textContent=lastScore.title;
+      $("teams").textContent=lastScore.teams || "MATCH SCORE";
+      $("score").textContent=lastScore.score;
+      $("detail").textContent=lastScore.detail;
+      $("meta").textContent="Last successful update";
+    }
+  }
+}
+
+$("refreshBtn").addEventListener("click",loadMatches);
+$("category").addEventListener("change",loadMatches);
+$("back").addEventListener("click",()=>{
+  location.href=location.pathname;
+});
+window.addEventListener("resize",fitCanvas);
+
+if(matchId){
+  $("listPage").style.display="none";
+  $("overlay").style.display="block";
+  fitCanvas();
+  refreshScore();
+  setInterval(refreshScore,20000);
+}else{
+  loadMatches();
+  setInterval(loadMatches,60000);
 }
 </script>
 </body>
